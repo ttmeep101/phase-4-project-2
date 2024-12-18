@@ -1,8 +1,19 @@
-from sqlalchemy_serializer import SerializerMixin
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import MetaData
+from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy_serializer import SerializerMixin
 import datetime
 
-from config import db
+from config import db, bcrypt
+
+metadata = MetaData(
+    naming_convention={
+        "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    }
+)
+
+db = SQLAlchemy(metadata=metadata)
 
 # Models go here!
 class Listing(db.Model, SerializerMixin):
@@ -23,10 +34,21 @@ class Listing(db.Model, SerializerMixin):
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String)
-    # password = db.Column(db.String)
-    name = db.Column(db.String)
-    age = db.Column(db.Integer)
+    username = db.Column(db.String, nullable=False)
+    _password_hash = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+
+    @property
+    def password_hash(self):
+        return self._password_hash
+    
+    @password_hash.setter
+    def password_hash(self, password):
+        self._password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def authenticate(self, password):
+        return bcrypt.check_password_hash(self.password_hash, password)
 
     #relationship
     bookings = db.relationship('Booking', back_populates='users', cascade='all, delete-orphan')
