@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 # Standard library imports
 from random import randint, choice as rc
 
@@ -8,7 +7,55 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db
+from models import db, User, Listing
+import random
+
+with app.app_context():
+    #create and initialize a fake generator
+    fake = Faker()
+
+    #delete all row in User table
+    User.query.delete()
+
+    #create an empty list
+    users = []
+
+    #add some user instances to the list
+    for n in range(5):
+        user = User(
+            username=fake.user_name(),
+            password_hash=fake.word(),
+            name=fake.first_name(),
+            age=random.randint(18, 120)
+        )
+        users.append(user)
+    
+    db.session.add_all(users)
+    db.session.commit()
+
+    #delete all row in Listing table
+    Listing.query.delete
+
+    #create an empty list
+    listings = []
+    amenities = ['backyard', 'pool', 'porch', 'laundry', 'elevator', 'A/C', 'parking', 'pets allowed']
+
+    #add some listings instances to the list
+    for item in range(15):
+        listing = Listing(
+            price=random.randint(50000, 1000000000),
+            address=fake.address(),
+            sqft=random.randint(100, 10000),
+            bedroom=random.randint(0, 20),
+            bathroom=random.randint(0, 20),
+            kitchen=random.randint(0, 20),
+            amenity=rc(amenities)
+            )
+        listings.append(listing)
+    
+    db.session.add_all(listings)
+    db.session.commit()
+
 
 if __name__ == '__main__':
     fake = Faker()
