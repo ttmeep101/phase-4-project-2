@@ -49,7 +49,9 @@ with app.app_context():
             bedroom=random.randint(0, 20),
             bathroom=random.randint(0, 20),
             kitchen=random.randint(0, 20),
-            amenity=rc(amenities)
+            amenity=rc(amenities),
+            image=fake.word(),
+            pets=fake.boolean()
             )
         listings.append(listing)
     
