@@ -4,7 +4,7 @@ import React from "react";
 function Listings() {
     return (
         <main>
-            <ul>
+            {/* <ul>
                 <HouseCard 
                     key={id}
                     id={id}
@@ -15,7 +15,7 @@ function Listings() {
                     kitchen={kitchen}
                     amenities={amenities}
                 />
-            </ul>
+            </ul> */}
         </main>
     )
 }

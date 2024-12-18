@@ -1,17 +1,14 @@
 import React from "react";
-import { Link } from 'react-router-dom'
+import { NavLink } from "react-router-dom";
 
 function NavBar () {
     return (
-        <header>
-            <span className="title">Renter</span>
-            <span>
-                <Link className='header-link' to='/'>Home</Link>
-                <Link className='header-link' to='/listings'>Listings</Link>
-                <Link className='header-link' to='/bookings'>Bookings</Link>
-                <Link className='header-link' to='/signin'>Sign In</Link>
-            </span>
-        </header>
+        <nav className="navbar" role="navigation">
+            <NavLink className='header-link' to='/'>Home</NavLink>
+            <NavLink className='header-link' to='/listings'>Listings</NavLink>
+            <NavLink className='header-link' to='/bookings'>Bookings</NavLink>
+            <NavLink className='header-link' to='/signin'>Sign In</NavLink>
+        </nav>
     )
 }
 
