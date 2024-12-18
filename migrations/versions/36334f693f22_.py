@@ -1,8 +1,8 @@
-"""init migration
+"""empty message
 
-Revision ID: fe94bf987669
+Revision ID: 36334f693f22
 Revises: 
-Create Date: 2024-12-18 12:55:01.233332
+Create Date: 2024-12-18 15:24:31.335031
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'fe94bf987669'
+revision = '36334f693f22'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,10 +23,10 @@ def upgrade():
     sa.Column('price', sa.Integer(), nullable=False),
     sa.Column('address', sa.String(), nullable=False),
     sa.Column('sqft', sa.Integer(), nullable=False),
-    sa.Column('bedroom_amt', sa.Integer(), nullable=True),
-    sa.Column('bathroom_amt', sa.Integer(), nullable=True),
-    sa.Column('kitchen', sa.Boolean(), nullable=True),
-    sa.Column('amenities', sa.String(), nullable=True),
+    sa.Column('bedroom', sa.Integer(), nullable=True),
+    sa.Column('bathroom', sa.Integer(), nullable=True),
+    sa.Column('kitchen', sa.Integer(), nullable=True),
+    sa.Column('amenity', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('users',
@@ -35,7 +35,8 @@ def upgrade():
     sa.Column('_password_hash', sa.String(), nullable=False),
     sa.Column('name', sa.String(), nullable=False),
     sa.Column('age', sa.Integer(), nullable=False),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('username')
     )
     op.create_table('bookings',
     sa.Column('id', sa.Integer(), nullable=False),
