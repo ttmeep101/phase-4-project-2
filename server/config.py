@@ -33,3 +33,8 @@ CORS(app)
 
 # Instantiate Bcrypt for password hashing
 bcrypt = Bcrypt(app)
+
+# 3b. Session Set up:
+# generate a secrete key `python -c 'import os; print(os.urandom(16))'`
+# configure secret key with flask app
+app.secret_key = b'y$2\xa7l\x89\xb0\t\x87\xb5\x1abf\xff\xeb\xd5'
