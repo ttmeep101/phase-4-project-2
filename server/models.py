@@ -3,6 +3,7 @@ from sqlalchemy import MetaData
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy_serializer import SerializerMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 
 from config import db, bcrypt
@@ -102,7 +103,7 @@ class Listing(db.Model, SerializerMixin):
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, nullable=False)
+    username = db.Column(db.String, nullable=False, unique=True)
     _password_hash = db.Column(db.String, nullable=False)
     name = db.Column(db.String, nullable=False)
     age = db.Column(db.Integer, nullable=False)
@@ -129,8 +130,8 @@ class User(db.Model, SerializerMixin):
     
     @validates('age')
     def validate_age(self, key, value):
-        if not value or (value < 18):
-            raise ValueError('User must have a age and must be 18 y.o. and up')
+        if not value or (int(value) < 18):
+            raise ValueError('User must have an age and must be 18 y.o. and up')
         return value
 
     @property
@@ -139,11 +140,19 @@ class User(db.Model, SerializerMixin):
     
     @password_hash.setter
     def password_hash(self, password):
-        self._password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+        self._password_hash = generate_password_hash(password)
 
     def authenticate(self, password):
-        return bcrypt.check_password_hash(self.password_hash, password)
-
+        return check_password_hash(self.password_hash, password)
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'name': self.name,
+            'age': self.age
+        }
+    
 class Booking(db.Model, SerializerMixin):
     __tablename__ = 'bookings'
     id = db.Column(db.Integer, primary_key=True)
