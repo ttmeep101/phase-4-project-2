@@ -119,12 +119,15 @@ class User(db.Model, SerializerMixin):
         self._password_hash = generate_password_hash(password)
 
     def authenticate(self, password):
+        password = password.strip()
         return check_password_hash(self.password_hash, password)
+
     
     def to_dict(self):
         return {
             'id': self.id,
             'username': self.username,
+            'password': self.password_hash,
             'name': self.name,
             'age': self.age
         }

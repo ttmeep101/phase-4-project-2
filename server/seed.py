@@ -17,21 +17,21 @@ with app.app_context():
     #delete all row in User table
     User.query.delete()
 
-    #create an empty list
-    users = []
+    # # #create an empty list
+    # # users = []
 
-    #add some user instances to the list
-    for n in range(5):
-        user = User(
-            username=fake.user_name(),
-            password_hash=fake.word(),
-            name=fake.first_name(),
-            age=random.randint(18, 120)
-        )
-        users.append(user)
+    # # #add some user instances to the list
+    # # for n in range(5):
+    # #     user = User(
+    # #         username=fake.user_name(),
+    # #         password_hash=fake.word(),
+    # #         name=fake.first_name(),
+    # #         age=random.randint(18, 120)
+    # #     )
+    # #     users.append(user)
     
-    db.session.add_all(users)
-    db.session.commit()
+    # db.session.add_all(users)
+    # db.session.commit()
 
     #delete all row in Listing table
     Listing.query.delete
