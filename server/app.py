@@ -170,8 +170,7 @@ class Signup(Resource):
                 return make_response({'error': 'Username already exists'}, 400)
 
             
-            password_hash = generate_password_hash(password)
-            user = User(username=username, password_hash=password_hash, age=age, name=name)
+            user = User(username=username, password_hash=password, age=age, name=name)
 
             db.session.add(user)
             db.session.commit()
@@ -198,14 +197,23 @@ api.add_resource(CheckSession, '/check')
 class Login(Resource):
     def post(self):
         params = request.json
-        user = db.session.execute(db.select(User).filter_by(usernamed=params.get('username'))).first()
+
+        user = params.get('username')
+        password = params.get('password')
+
+        if not user or not password:
+            return make_response({'error': 'Username and password are required'}, 400)
+        
+        user = db.session.query(User).filter_by(username=user).first()
+
         if not user:
             return make_response({'error': 'user not found'}, 404)
-        
-        if user.authenticate(params.get('password')):
+
+        if user.authenticate(password):
             session['user_id'] = user.id
-            return make_response(user.to_dict())
+            return make_response(user.to_dict(), 200)
         else:
+            print('invalid password')
             return make_response({'error': 'invalid password'}, 401)
 
 api.add_resource(Login, '/login')
