@@ -23,15 +23,19 @@ class Listing(db.Model, SerializerMixin):
     price = db.Column(db.Integer, nullable=False)
     address = db.Column(db.String, nullable=False)
     sqft = db.Column(db.Integer, nullable=False)
-    bedroom = db.Column(db.Integer)
-    bathroom = db.Column(db.Integer)
-    kitchen = db.Column(db.Integer)
-    amenity = db.Column(db.String)
-    # image =
+    bedroom = db.Column(db.Integer, nullable=False)
+    bathroom = db.Column(db.Integer, nullable=False)
+    kitchen = db.Column(db.Integer, nullable=False)
+    amenity = db.Column(db.String, nullable=False)
+    image = db.Column(db.String, nullable=False)
+    pets = db.Column(db.Boolean, nullable=False)
 
     #relationship
     bookings = db.relationship('Booking', back_populates='listing', cascade='all, delete-orphan')
     users = association_proxy('bookings', 'user')
+
+    #serialization rules
+    serialize_rules = ('-bookings',)
 
     # Add validation
     @validates('price')
@@ -82,6 +86,18 @@ class Listing(db.Model, SerializerMixin):
             raise ValueError('Listing must have a amenity')
         return value
     
+    @validates('image')
+    def validate_image(self, key, value):
+        if not value or (len(value) < 1):
+            raise ValueError('Listing must have an image')
+        return value
+    
+    @validates('pets')
+    def validate_pets(self, key, value):
+        if not isinstance(value, bool):
+            raise ValueError('Listing pets must be a boolean value')
+        return value
+
     # bedroom, bath, kitchen must match sqft and price
 
 class User(db.Model, SerializerMixin):
@@ -92,6 +108,14 @@ class User(db.Model, SerializerMixin):
     name = db.Column(db.String, nullable=False)
     age = db.Column(db.Integer, nullable=False)
 
+    #relationship
+    bookings = db.relationship('Booking', back_populates='user', cascade='all, delete-orphan')
+    listings = association_proxy('bookings', 'listing')
+
+    #serialize rules
+    serialize_rules = ('-bookings.user',)
+
+    # Add validation
     @validates('name')
     def validate_name(self, key, value):
         if not value or (len(value) < 1):
@@ -131,16 +155,11 @@ class User(db.Model, SerializerMixin):
             'name': self.name,
             'age': self.age
         }
-
-    bookings = db.relationship('Booking', back_populates='user', cascade='all, delete-orphan')
-    listings = association_proxy('bookings', 'listing')
-
+    
 class Booking(db.Model, SerializerMixin):
     __tablename__ = 'bookings'
     id = db.Column(db.Integer, primary_key=True)
-    #is date and time together??
-    time = db.Column(db.DateTime, nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
+    date_time = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.String, db.ForeignKey('users.id'))
     listing_id = db.Column(db.String, db.ForeignKey('listings.id'))
 
@@ -148,17 +167,15 @@ class Booking(db.Model, SerializerMixin):
     user = db.relationship('User', back_populates='bookings')
     listing = db.relationship('Listing', back_populates='bookings')
 
+    #serialize
+    serialize_rules = ('-listing.booking', '-user.booking')
+
     # Add validation
-    @validates('time')
-    def validate_time(self, key, value):
+
+    @validates('date_time')
+    def validate_date_time(self, key, value):
         if not value:
-            raise ValueError('Booking must have a time')
-        return value
-    
-    @validates('date')
-    def validate_date(self, key, value):
-        if not value:
-            raise ValueError('Booking must have a date')
+            raise ValueError('Booking must have a date and time')
         return value
 
 # class Review(db.Model, SerializerMixin):

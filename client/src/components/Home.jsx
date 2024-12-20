@@ -5,7 +5,6 @@ import NavBar from "./NavBar";
 function Home() {
   return (
     <div className="home">
-      <NavBar />
       <h1>Welcome to Renter!</h1>
       <p>Some text here</p>
       <div>

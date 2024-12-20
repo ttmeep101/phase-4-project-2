@@ -5,3 +5,133 @@
   --text: hsla(0, 0%, 100%, 0.88);
 }
 
+header {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--neutral-bg);
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.header {
+  position: relative;
+  left: 0;
+  bottom: 10px;
+  width: 100%;
+  height: 30%;
+  background-color: #deeee2;
+  color: rgb(3, 3, 20);
+  text-align: center;
+  border-radius: 5px;
+  padding-bottom: 20px;
+  padding-top: 10px;
+}
+
+.header-link {
+  color: black;
+  margin-left: 20px;
+  margin-right: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.2s ease;
+}
+
+.header-link:hover {
+  color: #129f37;
+}
+
+
+.footer {
+  position: relative;
+  left: 0;
+  bottom: 20px;
+  width: 100%;
+  background-color: #c9ead2;
+  color: rgb(3, 3, 20);
+  text-align: center;
+  border-radius: 5px;
+  padding-bottom: 20px;
+  padding-top: 10px;
+  margin-top: 30px;
+}
+
+.cards {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 20px;
+}
+
+.card {
+  background-color: var(--card-bg);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgb(184, 233, 189);
+  text-align: center;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px rgb(11, 112, 33);
+  transform: translateY(-5px);
+}
+
+.home h1 {
+  font-size: 50px;
+  color: #041d0a;
+  text-align: center;
+}
+
+.searchbar {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.submit-button {
+  background-color: rgb(137, 235, 126);
+  color: black;
+}
+
+.submit-button.sort-button {
+  background-color: var(--pink);
+  color: black;
+  font-size: 1.1em;
+  padding: 0.5rem 1.5rem;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.submit-button.sort-button:hover {
+  background-color: #c9ead2;
+  transform: scale(1.05);
+}
+
+.submit-button.sort-button:focus {
+  outline: none;
+  box-shadow: 0 0 5px 2px #61dafb;
+}
+
+.modal {
+  z-index: 1;
+  background-color:rgb(11, 233, 59);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  border: 50px solid rgba(190, 190, 190, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
