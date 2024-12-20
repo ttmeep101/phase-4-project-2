@@ -7,12 +7,14 @@ from flask import Flask, request, make_response, jsonify, session
 from flask_restful import Api, Resource
 from sqlalchemy.exc import NoResultFound
 from werkzeug.security import generate_password_hash, check_password_hash
+from dateutil import parser
 
 import os
 
 # Local imports
 from config import app, db, api
 from models import db, Listing, User, Booking
+from flask_cors import CORS
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DATABASE = os.environ.get("DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
@@ -21,6 +23,7 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.json.compact = False
+CORS(app)
 
 migrate = Migrate(app, db)
 
@@ -35,9 +38,9 @@ class Listings(Resource):
     def get(self):
         try:
             listings = db.session.execute(db.select(Listing)).scalars()
-            list_listings = [listing.to_dict() for listing in listings]
+            list_listings = [lst.to_dict(rules=('-bookings',)) for lst in listings]
             return make_response(list_listings)
-        except:
+        except Exception as e:
             return make_response({'error': 'Listings not found'}, 404)
     
     def post(self):
@@ -89,13 +92,16 @@ class ListingsById(Resource):
             return make_response(jsonify(''), 404)
         except:
             return make_response({'error': 'Listing not found'}, 404)
+        
+api.add_resource(Listings, '/listings')
+api.add_resource(ListingsById, '/listings/<int:id>')
 
 class Bookings(Resource):
-    def get(self, id):
+    def get(self):
         try:
             bookings = db.session.execute(db.select(Booking)).scalars()
             list_booking = [booking.to_dict() for booking in bookings]
-            return make_response(bookings.to_dict())
+            return make_response(list_booking)
         except:
             return make_response({'error': 'Booking not found'}, 404)
     
@@ -103,15 +109,15 @@ class Bookings(Resource):
         try:
             param = request.json
             new_booking = Booking(
-                time=param['time'],
-                date=param['date'],
+                date_time=parser.parse(param['date_time']),
                 user_id=param['user_id'],
                 listing_id=param['listing_id']
             )
             db.session.add(new_booking)
             db.session.commit()
             return make_response(new_booking.to_dict(), 201)
-        except:
+        except Exception as e:
+            print(e)
             return make_response({'error': ['validation errors']}, 400)
 
 class BookingsById(Resource):
@@ -144,8 +150,6 @@ class BookingsById(Resource):
         except:
             return make_response({'error': 'Booking not found'}, 404)
 
-api.add_resource(Listings, '/listings')
-api.add_resource(ListingsById, '/listings/<int:id>')
 api.add_resource(Bookings, '/bookings')
 api.add_resource(BookingsById, '/bookings/<int:id>')
 

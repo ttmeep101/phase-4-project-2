@@ -35,7 +35,7 @@ class Listing(db.Model, SerializerMixin):
     users = association_proxy('bookings', 'user')
 
     #serialization rules
-    serialize_rules = ('-bookings')
+    serialize_rules = ('-bookings',)
 
     # Add validation
     @validates('price')
@@ -113,7 +113,7 @@ class User(db.Model, SerializerMixin):
     listings = association_proxy('bookings', 'listing')
 
     #serialize rules
-    serialize_rules = ('-bookings.user')
+    serialize_rules = ('-bookings.user',)
 
     # Add validation
     @validates('name')
@@ -156,9 +156,7 @@ class User(db.Model, SerializerMixin):
 class Booking(db.Model, SerializerMixin):
     __tablename__ = 'bookings'
     id = db.Column(db.Integer, primary_key=True)
-    #is date and time together??
-    time = db.Column(db.DateTime, nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
+    date_time = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.String, db.ForeignKey('users.id'))
     listing_id = db.Column(db.String, db.ForeignKey('listings.id'))
 
@@ -170,16 +168,11 @@ class Booking(db.Model, SerializerMixin):
     serialize_rules = ('-listing.booking', '-user.booking')
 
     # Add validation
-    @validates('time')
-    def validate_time(self, key, value):
+
+    @validates('date_time')
+    def validate_date_time(self, key, value):
         if not value:
-            raise ValueError('Booking must have a time')
-        return value
-    
-    @validates('date')
-    def validate_date(self, key, value):
-        if not value:
-            raise ValueError('Booking must have a date')
+            raise ValueError('Booking must have a date and time')
         return value
 
 # class Review(db.Model, SerializerMixin):

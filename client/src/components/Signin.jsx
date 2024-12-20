@@ -40,7 +40,7 @@ function Signin() {
 
     return (
         <div>
-            <NavBar />
+            <h3>Sign In Here:</h3>
             <form className="signin" onSubmit={handleSubmit}>
             <label htmlFor='username'>Username:</label>
                 <input 
@@ -74,7 +74,7 @@ function Signin() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
-                <button type="submit">Submit</button>
+                <button type="submit-button">Submit</button>
             </form>
         </div>
     )
