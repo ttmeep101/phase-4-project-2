@@ -54,7 +54,6 @@ class Listings(Resource):
                 bathroom=param['bathroom'],
                 kitchen=param['kitchen'],
                 amenity=param['amenity'],
-                image=param['image'],
                 pets=param['pets']
             )
             db.session.add(new_listing)

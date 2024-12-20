@@ -17,6 +17,21 @@ metadata = MetaData(
 db = SQLAlchemy(metadata=metadata)
 
 # Models go here!
+class Image(db.Model, SerializerMixin):
+    __tablename__ = 'images'
+    id = db.Column(db.Integer, primary_key=True)
+    file = db.Column(db.String, unique=True)
+    listing_id = db.Column(db.Integer, db.ForeignKey('listings.id'))
+
+    listing = db.relationship('Listing', back_populates='images')
+
+    @validates('file')
+    def validate_file(self, key, value):
+        if not value or (len(value) < 1):
+            raise ValueError('Listing must have an image')
+        return value
+    
+
 class Listing(db.Model, SerializerMixin):
     __tablename__ = 'listings'
     id = db.Column(db.Integer, primary_key=True)
@@ -27,12 +42,12 @@ class Listing(db.Model, SerializerMixin):
     bathroom = db.Column(db.Integer, nullable=False)
     kitchen = db.Column(db.Integer, nullable=False)
     amenity = db.Column(db.String, nullable=False)
-    image = db.Column(db.String, nullable=False)
     pets = db.Column(db.Boolean, nullable=False)
 
     #relationship
     bookings = db.relationship('Booking', back_populates='listing', cascade='all, delete-orphan')
     users = association_proxy('bookings', 'user')
+    images = db.relationship('Image', back_populates='listing')
 
     #serialization rules
     serialize_rules = ('-bookings',)
@@ -84,12 +99,6 @@ class Listing(db.Model, SerializerMixin):
     def validate_amenity(self, key, value):
         if not value or (len(value) < 1):
             raise ValueError('Listing must have a amenity')
-        return value
-    
-    @validates('image')
-    def validate_image(self, key, value):
-        if not value or (len(value) < 1):
-            raise ValueError('Listing must have an image')
         return value
     
     @validates('pets')
@@ -177,6 +186,7 @@ class Booking(db.Model, SerializerMixin):
         if not value:
             raise ValueError('Booking must have a date and time')
         return value
+
 
 # class Review(db.Model, SerializerMixin):
 #     __tablename__ = 'reviews'
