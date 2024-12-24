@@ -48,16 +48,15 @@ function Signin() {
 
     return (
         <div>
-            <NavBar />
             {signup ? (
                 <>
-                    <button onClick={() => setSignup(false)}>I already have an account</button>
-                    <h1>Register New User</h1>
+                    <button className="submit-button" onClick={() => setSignup(false)}>I already have an account</button>
+                    <h2>Register New User</h2>
                 </>
             ) : (
                 <>
-                    <button onClick={() => setSignup(true)}>I want to register an account</button>
-                    <h1>Login</h1>
+                    <button className="submit-button" onClick={() => setSignup(true)}>I want to register an account</button>
+                    <h2>Login</h2>
                 </>
             )}
             <form className="signin" onSubmit={handleSubmit}>
@@ -96,7 +95,7 @@ function Signin() {
                             onChange={(e) => setName(e.target.value)}
                         />
                     </>) : null}
-                <button type="submit">Submit</button>
+                <button className="submit-button" type="submit">Submit</button>
             </form>
         </div>
     )

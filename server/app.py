@@ -13,13 +13,14 @@ import os
 
 # Local imports
 from config import app, db, api
-from models import db, Listing, User, Booking
+from models import db, Listing, User, Booking, Image
 from flask_cors import CORS
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DATABASE = os.environ.get("DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
 
-app = Flask(__name__)
+app = Flask(__name__,
+            static_folder='images')
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.json.compact = False
@@ -41,11 +42,13 @@ class Listings(Resource):
             list_listings = [lst.to_dict(rules=('-bookings',)) for lst in listings]
             return make_response(list_listings)
         except Exception as e:
+            print(f'error occured: {e}')
             return make_response({'error': 'Listings not found'}, 404)
     
     def post(self):
         try:
             param = request.json
+            print(param)
             new_listing = Listing(
                 price=param['price'],
                 address=param['address'],
@@ -59,7 +62,8 @@ class Listings(Resource):
             db.session.add(new_listing)
             db.session.commit()
             return make_response(new_listing.to_dict(), 201)
-        except:
+        except Exception as e:
+            print(f'error occured: {e}')
             return make_response({'error': ['validation errors']}, 400)
     
 class ListingsById(Resource):
@@ -67,7 +71,8 @@ class ListingsById(Resource):
         try:
             listing = db.session.execute(db.select(Listing).filter_by(id=id)).scalar_one()
             return make_response(listing.to_dict())
-        except:
+        except Exception as e:
+            print(f'error occured: {e}')
             return make_response({'error': 'Listing not found'}, 404)
         
     def patch(self, id):
@@ -80,7 +85,8 @@ class ListingsById(Resource):
             return make_response(listing.to_dict(), 202)
         except NoResultFound:
             return make_response({'error': 'Listing not found'}, 404)
-        except:
+        except Exception as e:
+            print(f'error occured: {e}')
             return make_response({'error': ['validation errors']}, 400)
     
     def delete(self, id):
@@ -89,7 +95,8 @@ class ListingsById(Resource):
             db.session.delete(listing)
             db.session.commit()
             return make_response(jsonify(''), 404)
-        except:
+        except Exception as e:
+            print(f'error occured: {e}')
             return make_response({'error': 'Listing not found'}, 404)
         
 api.add_resource(Listings, '/listings')
@@ -101,7 +108,8 @@ class Bookings(Resource):
             bookings = db.session.execute(db.select(Booking)).scalars()
             list_booking = [booking.to_dict() for booking in bookings]
             return make_response(list_booking)
-        except:
+        except Exception as e:
+            print(f'error occured: {e}')
             return make_response({'error': 'Booking not found'}, 404)
     
     def post(self):
@@ -116,7 +124,7 @@ class Bookings(Resource):
             db.session.commit()
             return make_response(new_booking.to_dict(), 201)
         except Exception as e:
-            print(e)
+            print(f'error occured: {e}')
             return make_response({'error': ['validation errors']}, 400)
 
 class BookingsById(Resource):
@@ -124,7 +132,8 @@ class BookingsById(Resource):
         try:
             booking = db.session.execute(db.select(Booking).filter_by(id=id)).scalar_one()
             return make_response(booking.to_dict())
-        except:
+        except Exception as e:
+            print(f'error occured: {e}')
             return make_response({'error': 'Booking not found'}, 404)
         
     def patch(self, id):
@@ -137,7 +146,8 @@ class BookingsById(Resource):
             return make_response(booking.to_dict(), 202)
         except NoResultFound:
             return make_response({'error': 'Booking not found'}, 404)
-        except:
+        except Exception as e:
+            print(f'error occured: {e}')
             return make_response({'error': ['validation errors']}, 400)
     
     def delete(self, id):
@@ -145,8 +155,9 @@ class BookingsById(Resource):
             booking = db.session.execute(db.select(Booking).filter_by(id=id)).scalar_one()
             db.session.delete(booking)
             db.session.commit()
-            return make_response(jsonify(''), 404)
-        except:
+            return make_response(jsonify(''), 200)
+        except Exception as e:
+            print(f'error occured: {e}')
             return make_response({'error': 'Booking not found'}, 404)
 
 api.add_resource(Bookings, '/bookings')
@@ -223,6 +234,29 @@ class Logout(Resource):
         return make_response({}, 204)
     
 api.add_resource(Logout, '/logout')
+
+class Images(Resource):
+    def get(self):
+        try:
+            images = db.session.execute(db.select(Image)).scalars()
+            imgs = [img.to_dict() for img in images]
+            return make_response(imgs)
+        except Exception as e:
+            print(f'error occured: {e}')
+            return make_response({'error': 'Images not found'}, 404)
+
+class ImagesByListingId(Resource):
+    def get(self, id):
+        try:
+            images = db.session.execute(db.select(Image).filter_by(listing_id=id)).scalars()
+            images_for_listing = [img.to_dict(rules=('-listing',)) for img in images]
+            return make_response(images_for_listing)
+        except Exception as e:
+            print(f'error occured: {e}')
+            return make_response({'error': 'Images not found'}, 404)
+        
+api.add_resource(Images, '/listing-images')
+api.add_resource(ImagesByListingId, '/listing-images/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

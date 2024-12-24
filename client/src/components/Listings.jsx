@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { Link, useOutletContext, NavLink } from "react-router-dom";
 import HouseCard from "./HouseCard";
+import NewListing from "./NewListing";
 
 function Listings() {
     const { houses } = useOutletContext();
@@ -45,6 +46,7 @@ function Listings() {
                         id={house.id}
                         price={house.price}
                         address={house.address}
+                        sqft={house.sqft}
                         bedroom={house.bedroom}
                         bathroom={house.bathroom}
                         kitchen={house.kitchen}

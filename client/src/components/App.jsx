@@ -6,21 +6,32 @@ import Footer from "./Footer";
 function App() {
   const [houses, setHouses] = useState([])
   const [bookings, setBookings] = useState([])
+  const [houseImages, setHouseImages] = useState([]);
 
   useEffect(() => {
     fetch('http://localhost:5555/listings')
       .then((resp) => resp.json())
-      .then((data) => setHouses(data))
+      .then(async (data) => {
+        setHouses(data);
+      })
       .catch((error) => console.error("Error fetching listings", error));
 
       fetch('http://localhost:5555/bookings')
       .then((resp) => resp.json())
       .then((data) => setBookings(data))
       .catch((error) => console.error("Error fetching bookings", error));
+      
+      fetch(`http://localhost:5555/listing-images`)
+        .then(resp => resp.json()).then((data) => {
+          setHouseImages(data);
+        })
+        .catch((error) => console.error("Error fetching images", error));
   }, [])
 
   const bookedOrNot = (id, dateTime, userId) => {
-    const houseIsBooked = bookings.find((housetoBook) => housetoBook.listingId === id);
+    const houseIsBooked = bookings.find((housetoBook) => {
+      return housetoBook.listing_id === id;
+    });
     if (houseIsBooked) {
       fetch(`http://localhost:5555/bookings/${houseIsBooked.id}`, {
         method: 'DELETE',
@@ -29,7 +40,7 @@ function App() {
         }
       })
       .then(() => {
-        const newBooking = bookings.filter((housetoBook) => id !== housetoBook.listingId);
+        const newBooking = bookings.filter((housetoBook) => id !== housetoBook.listing_id);
         setBookings([...newBooking]);
       })
       .catch((error) => console.error('Error removing house from bookings', error));
@@ -50,20 +61,24 @@ function App() {
   };
 
   const checkIfBooked = (id) => {
-    return bookings.find((housetoBook) => housetoBook.listingId === id)
+    return bookings.find((housetoBook) => housetoBook.listing_id === id)
   }
 
   return (
     <div className="app">
       <NavBar />
-      <Outlet context={{
-        houses: houses,
-        setHouses: setHouses,
-        bookings: bookings,
-        setBookings: setBookings,
-        bookedOrNot: bookedOrNot,
-        checkIfBooked: checkIfBooked,
-      }}/>
+      <div className="content">
+        <Outlet context={{
+          houses: houses,
+          setHouses: setHouses,
+          bookings: bookings,
+          houseImages: houseImages,
+          setHouseImages: setHouseImages,
+          setBookings: setBookings,
+          bookedOrNot: bookedOrNot,
+          checkIfBooked: checkIfBooked,
+        }}/>
+      </div>
       <Footer />
     </div>
   )
