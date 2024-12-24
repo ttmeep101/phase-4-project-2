@@ -20,7 +20,7 @@ db = SQLAlchemy(metadata=metadata)
 class Image(db.Model, SerializerMixin):
     __tablename__ = 'images'
     id = db.Column(db.Integer, primary_key=True)
-    file = db.Column(db.String, unique=True)
+    file = db.Column(db.String)
     listing_id = db.Column(db.Integer, db.ForeignKey('listings.id'))
 
     listing = db.relationship('Listing', back_populates='images')
@@ -47,52 +47,46 @@ class Listing(db.Model, SerializerMixin):
     #relationship
     bookings = db.relationship('Booking', back_populates='listing', cascade='all, delete-orphan')
     users = association_proxy('bookings', 'user')
-    images = db.relationship('Image', back_populates='listing')
+    images = db.relationship('Image', back_populates='listing', cascade='all, delete-orphan')
 
     #serialization rules
-    serialize_rules = ('-bookings',)
+    serialize_rules = ('-bookings','-images')
 
     # Add validation
     @validates('price')
     def validate_price(self, key, value):
-        if not value or (value < 50000):
+        if int(value) < 100:
             raise ValueError('Listing must have a price and min 50k')
         return value
     
     @validates('address')
     def validate_address(self, key, value):
-        if not value or (len(value) < 10):
+        if len(value) < 10:
             raise ValueError('Listing must have a address and min 10 chars')
         return value
     
     @validates('sqft')
     def validate_sqft(self, key, value):
-        if not value or (value < 100):
+        if int(value) < 100:
             raise ValueError('Listing must have a sq footage and min 100 sq ft')
         return value
     
     @validates('bedroom')
     def validate_bedroom(self, key, value):
-        if not isinstance(value, int):
-            raise ValueError('Listing must have a bedroom')
-        elif value < 0:
-            raise ValueError('Listing must not be negative')
+        if int(value) < 0:
+            raise ValueError('Listing must not have a negative number of bedrooms')
         return value
     
     @validates('bathroom')
     def validate_bathroom(self, key, value):
-        if not isinstance(value, int):
-            raise ValueError('Listing must have a bathroom')
-        elif value < 0:
-            raise ValueError('Listing must not be negative')
+        if int(value) < 0:
+            raise ValueError('Listing must not have a negative number of bathrooms')
         return value
     
     @validates('kitchen')
     def validate_kitchen(self, key, value):
-        if not isinstance(value, int):
-            raise ValueError('Listing must have a kitchen')
-        elif value < 0:
-            raise ValueError('Listing must not be negative')
+        if int(value) < 0:
+            raise ValueError('Listing must not have a negative number of kitchens')
         return value
     
     @validates('amenity')

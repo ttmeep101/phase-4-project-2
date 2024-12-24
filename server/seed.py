@@ -7,7 +7,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, User, Listing
+from models import db, User, Listing, Image
 import random
 
 with app.app_context():
@@ -46,9 +46,9 @@ with app.app_context():
             price=random.randint(50000, 1000000000),
             address=fake.address(),
             sqft=random.randint(100, 10000),
-            bedroom=random.randint(0, 20),
-            bathroom=random.randint(0, 20),
-            kitchen=random.randint(0, 20),
+            bedroom=random.randint(1, 20),
+            bathroom=random.randint(1, 20),
+            kitchen=random.randint(1, 20),
             amenity=rc(amenities),
             pets=fake.boolean()
             )
@@ -57,6 +57,19 @@ with app.app_context():
     db.session.add_all(listings)
     db.session.commit()
 
+    roomTypes = ['exterior', 'bedroom', 'kitchen', 'livingroom']
+
+    images = []
+    for i in range(1,16):
+        for roomType in roomTypes:
+            image = Image(
+                file=f"/images/{roomType}{i}.jpg",
+                listing_id=i
+            )
+            images.append(image)
+    
+    db.session.add_all(images)
+    db.session.commit()
 
 if __name__ == '__main__':
     fake = Faker()
