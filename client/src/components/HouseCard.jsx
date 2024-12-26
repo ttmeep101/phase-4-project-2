@@ -6,7 +6,7 @@ function HouseCard({id, price, address, sqft, bedroom, bathroom, kitchen, amenit
     const { houseImages } = useOutletContext();
     
     const firstHouseImage = houseImages && houseImages.find((houseImage) => {
-        return houseImage.listing_id.toString() === id.toString();
+        return houseImage.listing_id?.toString() === id?.toString();
     });
 
     return (

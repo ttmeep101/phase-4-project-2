@@ -7,6 +7,7 @@ from flask import Flask, request, make_response, jsonify, session
 from flask_restful import Api, Resource
 from sqlalchemy.exc import NoResultFound
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from dateutil import parser
 
 import os
@@ -23,6 +24,8 @@ app = Flask(__name__,
             static_folder='images')
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+upload_folder = os.path.join('images')
+app.config['UPLOAD'] = upload_folder
 app.json.compact = False
 CORS(app)
 
@@ -48,7 +51,6 @@ class Listings(Resource):
     def post(self):
         try:
             param = request.json
-            print(param)
             new_listing = Listing(
                 price=param['price'],
                 address=param['address'],
@@ -254,6 +256,21 @@ class ImagesByListingId(Resource):
         except Exception as e:
             print(f'error occured: {e}')
             return make_response({'error': 'Images not found'}, 404)
+    def post(self, id):
+        try:
+            file = request.files['file']
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD'], filename))
+            newImage = Image(
+                file=f"/{os.path.join(app.config['UPLOAD'], filename)}",
+                listing_id=id
+            )
+            db.session.add(newImage)
+            db.session.commit()
+            return make_response({'file': f"/{os.path.join(app.config['UPLOAD'], filename)}", 'id': newImage.id, 'listing_id': id}, 200)
+        except Exception as e:
+            print(f'error occured: {e}')
+            return make_response({'error': 'Image upload failed'}, 404)
         
 api.add_resource(Images, '/listing-images')
 api.add_resource(ImagesByListingId, '/listing-images/<int:id>')
