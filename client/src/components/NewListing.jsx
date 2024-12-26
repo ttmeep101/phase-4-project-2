@@ -2,21 +2,43 @@ import React, { useState } from "react";
 import { useOutletContext, Link } from "react-router-dom";
 
 function NewListing() {
-    const { houses, setHouses } = useOutletContext();
+    const { houses, setHouses, houseImages, setHouseImages } = useOutletContext();
+    const [ images, setImages ] = useState(Array(4).fill(''));
 
     const addNewListing = (newListing) => {
         fetch("/listings", {
-          method: "POST",
-          headers: {
-            "Content-Type": "Application/JSON",
-          },
-          body: JSON.stringify(newListing),
+            method: "POST",
+            headers: {
+                "Content-Type": "Application/JSON",
+            },
+            body: JSON.stringify(newListing),
         })
-          .then((response) => response.json())
-          .then((house) => {
+        .then((response) => response.json())
+        .then((house) => {
             setHouses([...houses, house]);
-          })
-          .catch((error) => console.error("Error adding new listing", error));
+            const imageFetches = images.reduce((result, image) => {
+                if (!!image) {
+                    const data = new FormData();
+                    data.append('file', image);
+                    data.append('name', 'image');
+                    const imageUploadFetch = fetch(`/listing-images/${house.id}`, {
+                        method: "POST",
+                        body: data
+                    });
+                    result.push(imageUploadFetch);
+                }
+                return result;
+            }, []);
+            try {
+                Promise.all(imageFetches)
+                .then((results) => Promise.all(results.map(r => r.json())))
+                .then((results) => setHouseImages([...houseImages, ...results]))
+                .catch((error) => console.error("Error adding new listing images", error));
+            } catch(e) {
+                console.error('image upload failed');
+            }
+        })
+        .catch((error) => console.error("Error adding new listing", error));
       };
 
     
@@ -38,7 +60,6 @@ function NewListing() {
     const handleChange = (e) => {
         const { name, value, type } = e.target;
         if (name === 'pets') {
-            console.log('greppable', name, value, type, e.target.checked);
             setFormData({
                 ...formData,
                 [name]: !!e.target.checked
@@ -132,32 +153,52 @@ function NewListing() {
                     onChange={handleChange}
                 />
                 <input 
-                    type='text'
+                    type='file'
                     name='image1'
+                    accept="image/*"
                     placeholder="image url 1"
-                    value={formData.image1}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                        if (e?.target?.files) {
+                            images[0] = e.target.files[0];
+                            setImages([...images])
+                        }
+                    }}
                 />
                 <input 
-                    type='text'
+                    type='file'
                     name='image2'
+                    accept="image/*"
                     placeholder="image url 2"
-                    value={formData.image2}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                        if (e?.target?.files) {
+                            images[1] = e.target.files[0];
+                            setImages([...images])
+                        }
+                    }}
                 />
                 <input 
-                    type='text'
+                    type='file'
                     name='image3'
+                    accept="image/*"
                     placeholder="image url 3"
-                    value={formData.image3}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                        if (e?.target?.files) {
+                            images[2] = e.target.files[0];
+                            setImages([...images])
+                        }
+                    }}
                 />
                 <input 
-                    type='text'
+                    type='file'
                     name='image4'
+                    accept="image/*"
                     placeholder="image url 4"
-                    value={formData.image4}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                        if (e?.target?.files) {
+                            images[3] = e.target.files[0];
+                            setImages([...images])
+                        }
+                    }}
                 />
                 <button className="submit-button">Submit New Listing</button>
             </form>

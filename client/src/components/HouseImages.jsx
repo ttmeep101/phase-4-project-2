@@ -5,7 +5,7 @@ function HouseImages(){
     const { houseImages } = useOutletContext();
     const { id } = useParams();
     const houseImgs = houseImages && houseImages.filter((houseImage) => {
-        return houseImage.listing_id.toString() === id.toString();
+        return houseImage?.listing_id?.toString() === id?.toString();
     });
 
     if (!houseImgs) {

@@ -25,7 +25,7 @@ function HouseDetails(){
     
     const [updatedListing, setUpdatedListing] = useState(initialData);
 
-    const house = houses.find((house) => house.id.toString() === id);
+    const house = houses.find((house) => house?.id?.toString() === id);
     if (!house) {
         return (
             <div className="details">
@@ -68,7 +68,7 @@ function HouseDetails(){
     const {address, price, sqft, bedroom, bathroom, kitchen, amenity, pets} = house;
 
     const firstHouseImage = houseImages && houseImages.find((houseImage) => {
-        return houseImage.listing_id.toString() === id.toString();
+        return houseImage?.listing_id?.toString() === id?.toString();
     });
 
     return (
@@ -84,7 +84,7 @@ function HouseDetails(){
                 <p>Bathrooms: {bathroom}</p>
                 <p>Kitchen: {kitchen}</p>
                 <p>Amenity: {amenity}</p>
-                <p>Pets allowed: {pets.toString()}</p>
+                <p>Pets allowed: {pets?.toString()}</p>
                 <button className="submit-button" onClick={() => {
                     if (isBooked) {
                         bookedOrNot(id);
