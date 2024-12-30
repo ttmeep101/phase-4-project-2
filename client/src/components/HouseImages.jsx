@@ -20,12 +20,15 @@ function HouseImages(){
             <section className="image-gallery">
                 {houseImgs.map(houseImage => (
                     <div className="gallery-image-container">
-                        <img className="gallery-image" src={houseImage?.file} alt={houseImage?.id} key={houseImage?.id} />
+                        <Link className="gallery-image-link" to={`/images/${houseImage?.id}`}>
+                            <img className="gallery-image" src={houseImage?.file} alt={houseImage?.id} key={houseImage?.id} />
+                        </Link>
                     </div>
                 ))}
-
-                <Link className="image-gallery-back-link" to={`/listings/${id}`}><button className="submit-button">Back to Listing Details</button></Link>
             </section>
+            <div className="image-gallery-back-link-container">
+                <button className="submit-button image-gallery-back-button"><Link className="image-gallery-back-link" to={`/listings/${id}`}>Back to Listing Details</Link></button>
+            </div>
         </div>
     );
 }
