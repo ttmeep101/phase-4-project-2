@@ -5,6 +5,7 @@ import Bookings from './Bookings'
 import Signin from './Signin'
 import HouseDetails from "./HouseDetails";
 import HouseImages from "./HouseImages";
+import SingleImage from "./SingleImage";
 import App from "./App";
 import NewListing from "./NewListing";
 
@@ -19,6 +20,7 @@ const routes = createBrowserRouter([{
     { path: '/bookings', element: <Bookings /> },
     { path: '/signin', element: <Signin /> },
     { path: '/create-listing', element: <NewListing /> },
+    { path: '/images/:id', element: <SingleImage /> },
   ]
 }])
 
