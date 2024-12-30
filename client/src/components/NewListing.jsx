@@ -113,9 +113,14 @@ function NewListing() {
                 <h2>Please sign in to use this page</h2>
                 <Link to='/signin'>Login</Link>
             </div>)) : (
-            <div className="addlisting">
-                <h2>Add a new listing:</h2>
-                <form onSubmit={handleSubmit}>
+        <div className="container">
+            <h2>Add a new listing:</h2>
+            <form onSubmit={handleSubmit}>
+            <div class="row">
+                <div class="col-25">
+                    <label for="price">Price</label>
+                </div>
+                <div class="col-75">
                     <input
                         className="new-listing-input"
                         type='number'
@@ -125,15 +130,29 @@ function NewListing() {
                         value={formData.price}
                         onChange={handleChange}
                     />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-25">
+                    <label for="adress">Adress</label>
+                </div>
+                <div className="col-75">
                     <input
                         className="new-listing-input"
                         type='text'
                         name='address'
                         placeholder="Address"
-                        minLength="10"
+                        minlength="10"
                         value={formData.address}
                         onChange={handleChange}
                     />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-25">
+                    <label for="sqft">Sqft</label>
+                </div>
+                <div className="col-75">
                     <input
                         className="new-listing-input"
                         type='number'
@@ -143,6 +162,13 @@ function NewListing() {
                         value={formData.sqft}
                         onChange={handleChange}
                     />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-25">
+                    <label for="bedrooms">Bedrooms</label>
+                </div>
+                <div className="col-75">
                     <input
                         className="new-listing-input"
                         type='number'
@@ -152,6 +178,13 @@ function NewListing() {
                         value={formData.bedroom}
                         onChange={handleChange}
                     />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-25">
+                    <label for="bathrooms">Bathrooms</label>
+                </div>
+                <div className="col-75">
                     <input
                         className="new-listing-input"
                         type='number'
@@ -161,6 +194,13 @@ function NewListing() {
                         value={formData.bathroom}
                         onChange={handleChange}
                     />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-25">
+                    <label for="kitchen">Kitchen</label>
+                </div>
+                <div className="col-75">
                     <input
                         className="new-listing-input"
                         type='number'
@@ -170,6 +210,13 @@ function NewListing() {
                         value={formData.kitchen}
                         onChange={handleChange}
                     />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-25">
+                    <label for="amenity">Amenity</label>
+                </div>
+                <div className="col-75">
                     <input
                         className="new-listing-input"
                         type='text'
@@ -179,7 +226,24 @@ function NewListing() {
                         value={formData.amenity}
                         onChange={handleChange}
                     />
-                    <label htmlFor='pets'>Pets Allowed?</label>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-25">
+                    <label for="about">About</label>
+                </div>
+                <div className="col-75">
+                    <input
+                        className="new-listing-input"
+                        type="text"
+                        name="about"
+                        placeholder="Write something about the listing"
+                        minlength="1"
+                    />
+                </div>
+            </div>
+                <label htmlFor='pets'>Pets Allowed?</label>
+                <div>
                     <input
                         className="new-listing-input"
                         type='checkbox'
@@ -187,6 +251,8 @@ function NewListing() {
                         value={formData.pets}
                         onChange={handleChange}
                     />
+                </div>
+                <div>
                     <input
                         type='file'
                         name='image1'
@@ -199,6 +265,8 @@ function NewListing() {
                             }
                         }}
                     />
+                </div>
+                <div>
                     <input 
                         type='file'
                         name='image2'
@@ -211,6 +279,7 @@ function NewListing() {
                             }
                         }}
                     />
+                <div>
                     <input 
                         type='file'
                         name='image3'
@@ -223,6 +292,8 @@ function NewListing() {
                             }
                         }}
                     />
+                </div>
+                <div>
                     <input 
                         type='file'
                         name='image4'
@@ -235,10 +306,12 @@ function NewListing() {
                             }
                         }}
                     />
+                </div>
+                <div>
                     <button className="submit-button">Submit New Listing</button>
-                </form>
-                <Link to='/listings'><button className="submit-button">Back to All Listings</button></Link>
-            </div> )}
+                </div>
+            </form>
+            <Link to='/listings'><button className="submit-button">Back to All Listings</button></Link>
         </div>
     )
 }
