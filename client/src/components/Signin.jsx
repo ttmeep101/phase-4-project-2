@@ -47,7 +47,7 @@ function Signin() {
     }
 
     return (
-        <div>
+        <div className="container">
             {signup ? (
                 <>
                     <button className="submit-button" onClick={() => setSignup(false)}>I already have an account</button>
@@ -60,41 +60,70 @@ function Signin() {
                 </>
             )}
             <form className="signin" onSubmit={handleSubmit}>
-            <label htmlFor='username'>Username:</label>
-                <input 
-                    id='username'
-                    name='username'
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-                <label htmlFor='password'>Password:</label>
-                <input 
-                    id='password'
-                    name='password'
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+            <div className="row">
+                <div className="col-25">
+                    <label htmlFor='username'>Username:</label>
+                </div>
+                <div className="col-75">
+                    <input 
+                        id='username'
+                        name='username'
+                        type='text'
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-25">
+                    <label htmlFor='password'>Password:</label>
+                </div>
+                <div className="col-75">
+                    <input 
+                        id='password'
+                        name='password'
+                        type='text'
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+            </div>
                 {signup ? (
-                    <>
-                        <label htmlFor='age'>Age:</label>
-                        <input 
-                        id='age'
-                        name='age'
-                        placeholder="age"
-                        value={age}
-                        onChange={(e) => setAge(e.target.value)}
-                        />
-                        <label htmlFor='name'>Name:</label>
-                        <input 
-                            id='name'
-                            name='name'
-                            placeholder="name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                    </>) : null}
+                    <div>
+                        <div className="row">
+                            <div className="col-25">
+                                <label htmlFor='name'>Name:</label>
+                            </div>
+                            <div className="col-75">
+                                <input 
+                                    id='name'
+                                    name='name'
+                                    type="text"
+                                    placeholder="Your name"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-25">
+                                <label htmlFor='age'>Age:</label>
+                            </div>
+                            <div className="col-75">
+                                <input 
+                                id='age'
+                                name='age'
+                                type="number"
+                                placeholder="Your Age"
+                                value={age}
+                                onChange={(e) => setAge(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    ) : null}
                 <button className="submit-button" type="submit">Submit</button>
             </form>
         </div>
