@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import HouseCard from "./HouseCard";
-import { useOutletContext, useParams} from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 
 function Bookings () {
     const { bookings } = useOutletContext();

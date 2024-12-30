@@ -56,7 +56,7 @@ class Listing(db.Model, SerializerMixin):
     @validates('price')
     def validate_price(self, key, value):
         if int(value) < 100:
-            raise ValueError('Listing must have a price and min 50k')
+            raise ValueError('Listing must have a price and min 100')
         return value
     
     @validates('address')

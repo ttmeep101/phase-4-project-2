@@ -96,63 +96,78 @@ function NewListing() {
         <div className="addlisting">
             <h2>Add a new listing:</h2>
             <form onSubmit={handleSubmit}>
-                <input 
+                <input
+                    className="new-listing-input"
                     type='number'
                     name='price'
                     placeholder="Price"
+                    min="100"
                     value={formData.price}
                     onChange={handleChange}
                 />
-                <input 
+                <input
+                    className="new-listing-input"
                     type='text'
                     name='address'
                     placeholder="Address"
+                    minlength="10"
                     value={formData.address}
                     onChange={handleChange}
                 />
-                <input 
+                <input
+                    className="new-listing-input"
                     type='number'
                     name='sqft'
                     placeholder="sqft"
+                    min="100"
                     value={formData.sqft}
                     onChange={handleChange}
                 />
-                <input 
+                <input
+                    className="new-listing-input"
                     type='number'
                     name='bedroom'
                     placeholder="Bedroom"
+                    min="0"
                     value={formData.bedroom}
                     onChange={handleChange}
                 />
-                <input 
+                <input
+                    className="new-listing-input"
                     type='number'
                     name='bathroom'
                     placeholder="Bathroom"
+                    min="0"
                     value={formData.bathroom}
                     onChange={handleChange}
                 />
-                <input 
+                <input
+                    className="new-listing-input"
                     type='number'
                     name='kitchen'
                     placeholder="Kitchen"
+                    min="0"
                     value={formData.kitchen}
                     onChange={handleChange}
                 />
-                <input 
+                <input
+                    className="new-listing-input"
                     type='text'
                     name='amenity'
                     placeholder="Amenity"
+                    minlength="1"
                     value={formData.amenity}
                     onChange={handleChange}
                 />
                 <label htmlFor='pets'>Pets Allowed?</label>
                 <input
+                    className="new-listing-input"
                     type='checkbox'
                     name='pets'
                     value={formData.pets}
                     onChange={handleChange}
                 />
-                <input 
+                <input
                     type='file'
                     name='image1'
                     accept="image/*"
