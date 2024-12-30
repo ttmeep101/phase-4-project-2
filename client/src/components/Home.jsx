@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from 'react-router-dom';  
-import Listings from "./Listings";
 
 function Home() {
   return (
@@ -22,6 +21,15 @@ function Home() {
           Finding your perfect rental has never been easier. Our platform offers a seamless, user-friendly experience with powerful search filters to help you narrow down options based on your needs and preferences. 
           Start your search today and discover your next home with ease!</p>
         <Link to='/listings'><button className="submit-button">Start your rental search</button></Link>
+      </section>
+      <section>
+        <h2 className="section-header">Manage your Bookings</h2>
+        <p>Once you are signed in, easily manage your apartment tour bookings with our web application..
+          Schedule, reschedule, or cancel tours at your own convenience, all in one place.
+          Keep track of upcoming appointments, set reminders, and ensure you never miss a showing.
+          Whether you're a renter or a property manager, our web app makes apartment tour booking management seamless and efficient.
+        </p>
+        <Link to='/bookings'><button className="submit-button">See all my bookings</button></Link>
       </section>
       <section>
         <h2 className="section-header">Manage your Rentals</h2>

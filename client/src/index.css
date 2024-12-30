@@ -6,6 +6,8 @@
 }
 body {
   font-family: 'Lucida Sans', sans-serif;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .caprasimo-regular {
@@ -15,7 +17,7 @@ body {
 }
 
 .title-nav {
-  color: green;
+  color: rgb(216, 243, 216);
   padding-right: 5px;
   padding-left: 20px;
   font-size: 30px;
@@ -24,7 +26,7 @@ body {
 }
 
 .title {
-  color: green;
+  color: rgb(212, 238, 212);
   text-align: center;
   font-size: 50px;
   font-family: "Caprasimo";
@@ -37,9 +39,7 @@ body {
   bottom: 10px;
   width: 100%;
   height: 30%;
-  background-color: #f9f9f9;
-  color: rgb(3, 3, 20);
-  border-radius: 5px;
+  background-color: #095c1e;
   padding-bottom: 20px;
   padding-top: 15px;
   align-items: center;
@@ -56,7 +56,7 @@ body {
 }
 
 .headerlink {
-  color: black;
+  color: rgb(239, 232, 232);
   text-decoration: none;
   font-size: 18px;
 }
@@ -70,10 +70,9 @@ body {
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: #f9f9f9;
-  color: rgb(3, 3, 20);
+  background-color: #095c1e;
+  color: rgb(217, 217, 227);
   text-align: center;
-  border-radius: 5px;
   padding-bottom: 20px;
   padding-top: 10px;
   margin-top: 30px;
@@ -136,12 +135,11 @@ h2 {
 }
 
 .submit-button {
-  background-color: rgb(168, 222, 162);
-  color: black;
+  background-color: #095c1e;
+  color: rgb(236, 240, 239);
 }
 
 .submit-button.sort-button {
-  background-color: var(--pink);
   color: black;
   font-size: 1.1em;
   padding: 0.5rem 1.5rem;
@@ -164,7 +162,7 @@ section {
   margin: auto;
   display: block;
   box-sizing: inherit;
-  background-color: #f0f0f0;
+  background-color: #f1f5f2;
   padding: 20px;
   margin-bottom: 20px;
 }
@@ -179,7 +177,6 @@ section {
   background-position: center;
   background-size: cover;
   min-height: 30vh;
-  padding: 30px;
 }
 
 .detail-image {
@@ -197,5 +194,34 @@ section {
   max-width: 100%;
   margin-left: auto;
   margin-right: auto;
+}
+
+.new-listing-input:invalid {
+  outline: 2px solid red;
+
+  &::after {
+    content: 'input invalid'
+  }
+}
+
+.image-gallery {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.gallery-image-container {
+  flex: 1 0 calc(25% - 10px);
+  height: 250px;
+  gap: 10px;
+}
+
+.gallery-image {
+  height: 100%;
+  margin: 0 auto;
+  display: block;
+}
+
+.image-gallery-back-link {
+  margin-top: 25px;
   
 }

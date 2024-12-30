@@ -258,16 +258,27 @@ class ImagesByListingId(Resource):
             return make_response({'error': 'Images not found'}, 404)
     def post(self, id):
         try:
+            accepted_file_extensions = ['jpeg', '.jpg', '.png', '.gif']
             file = request.files['file']
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD'], filename))
-            newImage = Image(
-                file=f"/{os.path.join(app.config['UPLOAD'], filename)}",
-                listing_id=id
-            )
-            db.session.add(newImage)
-            db.session.commit()
-            return make_response({'file': f"/{os.path.join(app.config['UPLOAD'], filename)}", 'id': newImage.id, 'listing_id': id}, 200)
+            isAcceptedFileExtension = False
+            fileExt = filename[-4:]
+            for ext in accepted_file_extensions:
+                if ext == fileExt:
+                    isAcceptedFileExtension = True
+
+            if isAcceptedFileExtension:
+                file.save(os.path.join(app.config['UPLOAD'], filename)) 
+                newImage = Image(
+                    file=f"/{os.path.join(app.config['UPLOAD'], filename)}",
+                    listing_id=id
+                )
+                db.session.add(newImage)
+                db.session.commit()
+                return make_response({'file': f"/{os.path.join(app.config['UPLOAD'], filename)}", 'id': newImage.id, 'listing_id': id}, 200)
+            else:
+                print(f'error occured: {e}')
+                return make_response({'error': 'Image wrong file extension'}, 404)
         except Exception as e:
             print(f'error occured: {e}')
             return make_response({'error': 'Image upload failed'}, 404)

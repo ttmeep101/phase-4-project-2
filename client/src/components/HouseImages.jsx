@@ -17,12 +17,14 @@ function HouseImages(){
     }
     return (
         <div className="details">
-            <section>
+            <section className="image-gallery">
                 {houseImgs.map(houseImage => (
-                    <img className="detail-image" src={houseImage?.file} alt={houseImage?.id} key={houseImage?.id} />
+                    <div className="gallery-image-container">
+                        <img className="gallery-image" src={houseImage?.file} alt={houseImage?.id} key={houseImage?.id} />
+                    </div>
                 ))}
 
-                <Link to={`/listings/${id}`}><button className="submit-button">Back to Listing</button></Link>
+                <Link className="image-gallery-back-link" to={`/listings/${id}`}><button className="submit-button">Back to Listing Details</button></Link>
             </section>
         </div>
     );
