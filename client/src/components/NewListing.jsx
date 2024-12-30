@@ -113,207 +113,209 @@ function NewListing() {
                 <h2>Please sign in to use this page</h2>
                 <Link to='/signin'>Login</Link>
             </div>)) : (
-        <div className="container">
-            <h2>Add a new listing:</h2>
-            <form onSubmit={handleSubmit}>
-            <div class="row">
-                <div class="col-25">
-                    <label for="price">Price</label>
+            <div className="container">
+                <h2>Add a new listing:</h2>
+                <form onSubmit={handleSubmit}>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="price">Price</label>
+                    </div>
+                    <div class="col-75">
+                        <input
+                            className="new-listing-input"
+                            type='number'
+                            name='price'
+                            placeholder="Price"
+                            min="100"
+                            value={formData.price}
+                            onChange={handleChange}
+                        />
+                    </div>
                 </div>
-                <div class="col-75">
-                    <input
-                        className="new-listing-input"
-                        type='number'
-                        name='price'
-                        placeholder="Price"
-                        min="100"
-                        value={formData.price}
-                        onChange={handleChange}
-                    />
+                <div className="row">
+                    <div className="col-25">
+                        <label for="adress">Adress</label>
+                    </div>
+                    <div className="col-75">
+                        <input
+                            className="new-listing-input"
+                            type='text'
+                            name='address'
+                            placeholder="Address"
+                            minlength="10"
+                            value={formData.address}
+                            onChange={handleChange}
+                        />
+                    </div>
                 </div>
+                <div className="row">
+                    <div className="col-25">
+                        <label for="sqft">Sqft</label>
+                    </div>
+                    <div className="col-75">
+                        <input
+                            className="new-listing-input"
+                            type='number'
+                            name='sqft'
+                            placeholder="sqft"
+                            min="100"
+                            value={formData.sqft}
+                            onChange={handleChange}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-25">
+                        <label for="bedrooms">Bedrooms</label>
+                    </div>
+                    <div className="col-75">
+                        <input
+                            className="new-listing-input"
+                            type='number'
+                            name='bedroom'
+                            placeholder="Bedroom"
+                            min="0"
+                            value={formData.bedroom}
+                            onChange={handleChange}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-25">
+                        <label for="bathrooms">Bathrooms</label>
+                    </div>
+                    <div className="col-75">
+                        <input
+                            className="new-listing-input"
+                            type='number'
+                            name='bathroom'
+                            placeholder="Bathroom"
+                            min="0"
+                            value={formData.bathroom}
+                            onChange={handleChange}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-25">
+                        <label for="kitchen">Kitchen</label>
+                    </div>
+                    <div className="col-75">
+                        <input
+                            className="new-listing-input"
+                            type='number'
+                            name='kitchen'
+                            placeholder="Kitchen"
+                            min="0"
+                            value={formData.kitchen}
+                            onChange={handleChange}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-25">
+                        <label for="amenity">Amenity</label>
+                    </div>
+                    <div className="col-75">
+                        <input
+                            className="new-listing-input"
+                            type='text'
+                            name='amenity'
+                            placeholder="Amenity"
+                            minlength="1"
+                            value={formData.amenity}
+                            onChange={handleChange}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-25">
+                        <label for="about">About</label>
+                    </div>
+                    <div className="col-75">
+                        <input
+                            className="new-listing-input"
+                            type="text"
+                            name="about"
+                            placeholder="Write something about the listing"
+                            minlength="1"
+                        />
+                    </div>
+                </div>
+                    <label htmlFor='pets'>Pets Allowed?</label>
+                    <div>
+                        <input
+                            className="new-listing-input"
+                            type='checkbox'
+                            name='pets'
+                            value={formData.pets}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type='file'
+                            name='image1'
+                            accept="image/*"
+                            placeholder="image url 1"
+                            onChange={(e) => {
+                                if (e?.target?.files) {
+                                    images[0] = e.target.files[0];
+                                    setImages([...images])
+                                }
+                            }}
+                        />
+                    </div>
+                    <div>
+                        <input 
+                            type='file'
+                            name='image2'
+                            accept="image/*"
+                            placeholder="image url 2"
+                            onChange={(e) => {
+                                if (e?.target?.files) {
+                                    images[1] = e.target.files[0];
+                                    setImages([...images])
+                                }
+                            }}
+                        />
+                    </div>
+                    <div>
+                        <input 
+                            type='file'
+                            name='image3'
+                            accept="image/*"
+                            placeholder="image url 3"
+                            onChange={(e) => {
+                                if (e?.target?.files) {
+                                    images[2] = e.target.files[0];
+                                    setImages([...images])
+                                }
+                            }}
+                        />
+                    </div>
+                    <div>
+                        <input 
+                            type='file'
+                            name='image4'
+                            accept="image/*"
+                            placeholder="image url 4"
+                            onChange={(e) => {
+                                if (e?.target?.files) {
+                                    images[3] = e.target.files[0];
+                                    setImages([...images])
+                                }
+                            }}
+                        />
+                    </div>
+                    <div>
+                        <button className="submit-button">Submit New Listing</button>
+                    </div>
+                </form>
+                <Link to='/listings'><button className="submit-button">Back to All Listings</button></Link>
             </div>
-            <div className="row">
-                <div className="col-25">
-                    <label for="adress">Adress</label>
-                </div>
-                <div className="col-75">
-                    <input
-                        className="new-listing-input"
-                        type='text'
-                        name='address'
-                        placeholder="Address"
-                        minlength="10"
-                        value={formData.address}
-                        onChange={handleChange}
-                    />
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-25">
-                    <label for="sqft">Sqft</label>
-                </div>
-                <div className="col-75">
-                    <input
-                        className="new-listing-input"
-                        type='number'
-                        name='sqft'
-                        placeholder="sqft"
-                        min="100"
-                        value={formData.sqft}
-                        onChange={handleChange}
-                    />
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-25">
-                    <label for="bedrooms">Bedrooms</label>
-                </div>
-                <div className="col-75">
-                    <input
-                        className="new-listing-input"
-                        type='number'
-                        name='bedroom'
-                        placeholder="Bedroom"
-                        min="0"
-                        value={formData.bedroom}
-                        onChange={handleChange}
-                    />
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-25">
-                    <label for="bathrooms">Bathrooms</label>
-                </div>
-                <div className="col-75">
-                    <input
-                        className="new-listing-input"
-                        type='number'
-                        name='bathroom'
-                        placeholder="Bathroom"
-                        min="0"
-                        value={formData.bathroom}
-                        onChange={handleChange}
-                    />
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-25">
-                    <label for="kitchen">Kitchen</label>
-                </div>
-                <div className="col-75">
-                    <input
-                        className="new-listing-input"
-                        type='number'
-                        name='kitchen'
-                        placeholder="Kitchen"
-                        min="0"
-                        value={formData.kitchen}
-                        onChange={handleChange}
-                    />
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-25">
-                    <label for="amenity">Amenity</label>
-                </div>
-                <div className="col-75">
-                    <input
-                        className="new-listing-input"
-                        type='text'
-                        name='amenity'
-                        placeholder="Amenity"
-                        minlength="1"
-                        value={formData.amenity}
-                        onChange={handleChange}
-                    />
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-25">
-                    <label for="about">About</label>
-                </div>
-                <div className="col-75">
-                    <input
-                        className="new-listing-input"
-                        type="text"
-                        name="about"
-                        placeholder="Write something about the listing"
-                        minlength="1"
-                    />
-                </div>
-            </div>
-                <label htmlFor='pets'>Pets Allowed?</label>
-                <div>
-                    <input
-                        className="new-listing-input"
-                        type='checkbox'
-                        name='pets'
-                        value={formData.pets}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <input
-                        type='file'
-                        name='image1'
-                        accept="image/*"
-                        placeholder="image url 1"
-                        onChange={(e) => {
-                            if (e?.target?.files) {
-                                images[0] = e.target.files[0];
-                                setImages([...images])
-                            }
-                        }}
-                    />
-                </div>
-                <div>
-                    <input 
-                        type='file'
-                        name='image2'
-                        accept="image/*"
-                        placeholder="image url 2"
-                        onChange={(e) => {
-                            if (e?.target?.files) {
-                                images[1] = e.target.files[0];
-                                setImages([...images])
-                            }
-                        }}
-                    />
-                <div>
-                    <input 
-                        type='file'
-                        name='image3'
-                        accept="image/*"
-                        placeholder="image url 3"
-                        onChange={(e) => {
-                            if (e?.target?.files) {
-                                images[2] = e.target.files[0];
-                                setImages([...images])
-                            }
-                        }}
-                    />
-                </div>
-                <div>
-                    <input 
-                        type='file'
-                        name='image4'
-                        accept="image/*"
-                        placeholder="image url 4"
-                        onChange={(e) => {
-                            if (e?.target?.files) {
-                                images[3] = e.target.files[0];
-                                setImages([...images])
-                            }
-                        }}
-                    />
-                </div>
-                <div>
-                    <button className="submit-button">Submit New Listing</button>
-                </div>
-            </form>
-            <Link to='/listings'><button className="submit-button">Back to All Listings</button></Link>
-        </div>
-    )
+        )
+    }</div>)
 }
 
 export default NewListing;
