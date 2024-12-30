@@ -1,9 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useOutletContext, Link } from "react-router-dom";
+import { useUser } from "./UserContext";
 
 function NewListing() {
     const { houses, setHouses, houseImages, setHouseImages } = useOutletContext();
     const [ images, setImages ] = useState(Array(4).fill(''));
+    const { signedIn, setSignedIn } = useUser(false)
+        
+    useEffect(() => {
+        fetch('/check')
+        .then((resp) => {
+            if(resp.ok) {
+                setSignedIn(true)
+            }
+            else {
+                setSignedIn(false)
+            }
+        })
+    }, [setSignedIn])
 
     const addNewListing = (newListing) => {
         fetch("/listings", {
@@ -93,6 +107,12 @@ function NewListing() {
     };
 
     return (
+        <div>
+            {!signedIn ? 
+            ((<div>
+                <h2>Please sign in to use this page</h2>
+                <Link to='/signin'>Login</Link>
+            </div>)) : (
         <div className="container">
             <h2>Add a new listing:</h2>
             <form onSubmit={handleSubmit}>
@@ -259,7 +279,6 @@ function NewListing() {
                             }
                         }}
                     />
-                </div>
                 <div>
                     <input 
                         type='file'
