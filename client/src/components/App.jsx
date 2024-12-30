@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Switch, Route, Outlet } from "react-router-dom";
+import { UserProvider } from "./UserContext";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 

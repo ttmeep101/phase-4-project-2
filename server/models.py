@@ -43,10 +43,11 @@ class Listing(db.Model, SerializerMixin):
     kitchen = db.Column(db.Integer, nullable=False)
     amenity = db.Column(db.String, nullable=False)
     pets = db.Column(db.Boolean, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     #relationship
     bookings = db.relationship('Booking', back_populates='listing', cascade='all, delete-orphan')
-    users = association_proxy('bookings', 'user')
+    user = db.relationship('User', back_populates='listings')
     images = db.relationship('Image', back_populates='listing', cascade='all, delete-orphan')
 
     #serialization rules
@@ -113,7 +114,7 @@ class User(db.Model, SerializerMixin):
 
     #relationship
     bookings = db.relationship('Booking', back_populates='user', cascade='all, delete-orphan')
-    listings = association_proxy('bookings', 'listing')
+    listings = db.relationship('Listing', back_populates='user', cascade='all, delete-orphan')
 
     #serialize rules
     serialize_rules = ('-bookings.user',)
@@ -163,8 +164,8 @@ class Booking(db.Model, SerializerMixin):
     __tablename__ = 'bookings'
     id = db.Column(db.Integer, primary_key=True)
     date_time = db.Column(db.DateTime, nullable=False)
-    user_id = db.Column(db.String, db.ForeignKey('users.id'))
-    listing_id = db.Column(db.String, db.ForeignKey('listings.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    listing_id = db.Column(db.Integer, db.ForeignKey('listings.id'))
 
     #relationship
     user = db.relationship('User', back_populates='bookings')

@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import NavBar from "./NavBar";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useUser } from "./UserContext";
 
 function Signin() {
-    const [curUser, setUser] = useState(null)
+    const { signedIn, setSignedIn } = useUser(false)
     const [signup, setSignup] = useState(false)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [age, setAge] = useState('')
     const [name, setName] = useState('')
+    const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -22,6 +24,11 @@ function Signin() {
             values.name = name
         }
 
+        setUsername('')
+        setPassword('')
+        setAge('')
+        setName('')
+
         console.log("Sending the following payload to the backend:", values);
 
         const endpoint = signup ? '/signup' : '/login'
@@ -35,12 +42,20 @@ function Signin() {
         }).then((resp) => {
             if (resp.ok) {
                 resp.json().then((user) => {
-                    setUser(user)
+                    setSignedIn(true)
                     console.log("Login Sucessful. Current User: ",user)
+                    if(signup) {
+                        alert("Account created successfully!")
+                        navigate('/')
+                    } else {
+                        alert("Login Successful!")
+                        navigate('/')
+                    }
                 })
             } else {
                 resp.json().then((data) => {
                     console.log('Error:', data.error)
+                    alert(`Error: ${data.error}`)
                 })
             }
         })
@@ -50,12 +65,24 @@ function Signin() {
         <div>
             {signup ? (
                 <>
-                    <button className="submit-button" onClick={() => setSignup(false)}>I already have an account</button>
+                    <button className="submit-button" onClick={() => {
+                        setSignup(false)
+                        setUsername('')
+                        setPassword('')
+                        setAge('')
+                        setName('')
+                        }}>I already have an account</button>
                     <h2>Register New User</h2>
                 </>
             ) : (
                 <>
-                    <button className="submit-button" onClick={() => setSignup(true)}>I want to register an account</button>
+                    <button className="submit-button" onClick={() => {
+                        setSignup(true)
+                        setUsername('')
+                        setPassword('')
+                        setAge('')
+                        setName('')
+                        }}>I want to register an account</button>
                     <h2>Login</h2>
                 </>
             )}
@@ -95,7 +122,7 @@ function Signin() {
                             onChange={(e) => setName(e.target.value)}
                         />
                     </>) : null}
-                <button className="submit-button" type="submit">Submit</button>
+                <button className="submit-button" type="submit" disabled={!username || !password || (signup && (!age || !name))}>Submit</button>
             </form>
         </div>
     )
