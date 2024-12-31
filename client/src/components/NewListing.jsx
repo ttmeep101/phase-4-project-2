@@ -154,6 +154,20 @@ function NewListing() {
                 </div>
                 <div className="row">
                     <div className="col-25">
+                        <label htmlFor="type">Type</label>
+                    </div>
+                    <div className="col-75">
+                        <input
+                            className="new-listing-input"
+                            type="text"
+                            name="type"
+                            placeholder="Type of listing"
+                            minLength="1"
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-25">
                         <label htmlFor="sqft">Sqft</label>
                     </div>
                     <div className="col-75">
@@ -246,8 +260,53 @@ function NewListing() {
                         />
                     </div>
                 </div>
-                    <label htmlFor='pets'>Pets Allowed?</label>
-                    <div>
+                <div className="row">
+                    <div className="col-25">
+                        <label htmlFor="train">Commuting</label>
+                    </div>
+                    <div className="col-75">
+                        <input
+                            className="new-listing-input"
+                            type="text"
+                            name="train"
+                            placeholder="Write nearby trains, subway, buses"
+                            minLength="1"
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-25">
+                        <label htmlFor="airport">Airport</label>
+                    </div>
+                    <div className="col-75">
+                        <input
+                            className="new-listing-input"
+                            type="text"
+                            name="airport"
+                            placeholder="Write nearby airports"
+                            minLength="1"
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-25">
+                        <label htmlFor="security">Security</label>
+                    </div>
+                    <div className="col-75">
+                        <input
+                            className="new-listing-input"
+                            type="text"
+                            name="security"
+                            placeholder="Write form of security"
+                            minLength="1"
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-25"> 
+                        <label htmlFor='pets'>Pets Allowed?</label>
+                    </div>
+                    <div className="col-75">
                         <input
                             className="new-listing-input"
                             type='checkbox'
@@ -256,7 +315,40 @@ function NewListing() {
                             onChange={handleChange}
                         />
                     </div>
-                    <div>
+                </div>
+                <div className="row">
+                    <div className="col-25"> 
+                        <label htmlFor='parking'>Parking</label>
+                    </div>
+                    <div className="col-75">
+                        <input
+                            className="new-listing-input"
+                            type='checkbox'
+                            name='parking'
+                            value={formData.parking}
+                            onChange={handleChange}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-25"> 
+                        <label htmlFor='heat_water'>Heat and Water Included</label>
+                    </div>
+                    <div className="col-75">
+                        <input
+                            className="new-listing-input"
+                            type='checkbox'
+                            name='heat_water'
+                            value={formData.heat_water}
+                            onChange={handleChange}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-25">
+                        <label htmlFor="images">Image</label>
+                    </div>
+                    <div className="col-75">
                         <input
                             type='file'
                             name='image1'
@@ -270,7 +362,12 @@ function NewListing() {
                             }}
                         />
                     </div>
-                    <div>
+                </div>
+                <div className="row">
+                    <div className="col-25">
+                        <label htmlFor="images">Image</label>
+                    </div>
+                    <div className="col-75">
                         <input 
                             type='file'
                             name='image2'
@@ -284,7 +381,12 @@ function NewListing() {
                             }}
                         />
                     </div>
-                    <div>
+                </div>
+                <div className="row">
+                    <div className="col-25">
+                        <label htmlFor="images">Image</label>
+                    </div>
+                    <div className="col-75">
                         <input 
                             type='file'
                             name='image3'
@@ -297,6 +399,11 @@ function NewListing() {
                                 }
                             }}
                         />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-25">
+                        <label htmlFor="images">Image</label>
                     </div>
                     <div>
                         <input 
@@ -312,6 +419,7 @@ function NewListing() {
                             }}
                         />
                     </div>
+                </div>
                     <div>
                         <button className="submit-button">Submit New Listing</button>
                     </div>

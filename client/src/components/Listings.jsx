@@ -52,6 +52,11 @@ function Listings() {
                         amenity={house.amenity}
                         img={house.img}
                         pets={house.pets}
+                        about={house.about}
+                        type={house.type}
+                        parking={house.parking}
+                        heat_water={house.heat_water}
+                        security={house.security}
                 />
                 ))}
             </ul>

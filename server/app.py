@@ -60,7 +60,14 @@ class Listings(Resource):
                 kitchen=param['kitchen'],
                 amenity=param['amenity'],
                 pets=param['pets'],
-                user_id=param['user_id']
+                user_id=param['user_id'],
+                about=param['about'],
+                type=param['type'],
+                parking=param['parking'],
+                heat_water=param['heat_water'],
+                train=param['train'],
+                airport=param['airport'],
+                security=param['security']
             )
             db.session.add(new_listing)
             db.session.commit()

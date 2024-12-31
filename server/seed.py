@@ -38,7 +38,9 @@ with app.app_context():
 
     #create an empty list
     listings = []
-    amenities = ['backyard', 'pool', 'porch', 'laundry', 'elevator', 'A/C', 'parking', 'pets allowed']
+    amenities = ['backyard', 'pool', 'porch', 'laundry in unit', 'elevator', 'A/C', 'parking', 'dishwasher', 'furnished']
+    types = ['house', 'apartment', 'duplex', 'townhouse']
+    securities = ['doorman', 'gated community', 'cameras', 'none']
 
     #add some listings instances to the list
     for item in range(15):
@@ -51,7 +53,14 @@ with app.app_context():
             kitchen=random.randint(1, 20),
             amenity=rc(amenities),
             pets=fake.boolean(),
-            user_id=1
+            user_id=1,
+            about=fake.paragraph(nb_sentences=30, variable_nb_sentences=False),
+            type=rc(types),
+            parking=fake.boolean(),
+            heat_water=fake.boolean(),
+            train=fake.word(),
+            airport=fake.word(),
+            security=rc(securities)
             )
         listings.append(listing)
     

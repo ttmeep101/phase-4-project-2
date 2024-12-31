@@ -44,6 +44,13 @@ class Listing(db.Model, SerializerMixin):
     amenity = db.Column(db.String, nullable=False)
     pets = db.Column(db.Boolean, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    about = db.Column(db.String, nullable=False)
+    type = db.Column(db.String, nullable=False)
+    parking = db.Column(db.Boolean, nullable=False)
+    heat_water = db.Column(db.Boolean, nullable=False)
+    train = db.Column(db.String, nullable=False)
+    airport = db.Column(db.String, nullable=False)
+    security = db.Column(db.String, nullable=False)
 
     #relationship
     bookings = db.relationship('Booking', back_populates='listing', cascade='all, delete-orphan')
@@ -102,8 +109,48 @@ class Listing(db.Model, SerializerMixin):
             raise ValueError('Listing pets must be a boolean value')
         return value
 
-    # bedroom, bath, kitchen must match sqft and price
+    @validates('about')
+    def validate_about(self, key, value):
+        if len(value) < 10:
+            raise ValueError('Listing must have an about and min 10 chars')
+        return value
 
+    @validates('type')
+    def validate_type(self, key, value):
+        if len(value) < 1:
+            raise ValueError('Listing must have a type and min 1 char')
+        return value
+    
+    @validates('parking')
+    def validate_parking(self, key, value):
+        if not isinstance(value, bool):
+            raise ValueError('Listing parking must be a boolean value')
+        return value
+
+    @validates('heat_water')
+    def validate_heat_water(self, key, value):
+        if not isinstance(value, bool):
+            raise ValueError('Listing heat and water must be a boolean value')
+        return value
+    
+    @validates('train')
+    def validate_train(self, key, value):
+        if len(value) < 1:
+            raise ValueError('Listing must have a nearby train and min 1 char')
+        return value
+    
+    @validates('airport')
+    def validate_airport(self, key, value):
+        if len(value) < 1:
+            raise ValueError('Listing must have a nearby airport and min 1 char')
+        return value
+    
+    @validates('security')
+    def validate_security(self, key, value):
+        if len(value) < 1:
+            raise ValueError('Listing must have a security option and min 1 char')
+        return value
+    
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
