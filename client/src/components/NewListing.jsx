@@ -4,8 +4,28 @@ import { useUser } from "./UserContext";
 
 function NewListing() {
     const { houses, setHouses, houseImages, setHouseImages } = useOutletContext();
-    const [ images, setImages ] = useState(Array(4).fill(''));
+    const [ images, setImages ] = useState([]);
     const { user, signedIn, setSignedIn } = useUser();
+
+    const initialFormData = {
+        price: '',
+        address: '',
+        sqft: '',
+        bedroom: '',
+        bathroom: '',
+        kitchen: '',
+        amenity: '',
+        pets: false,
+        about: '',
+        type: '',
+        parking: false,
+        heat_water: false,
+        train: '',
+        airport: '',
+        security: ''
+    };
+    
+    const [ formData, setFormData ] = useState({...initialFormData});
         
     useEffect(() => {
         fetch('/check')
@@ -25,7 +45,7 @@ function NewListing() {
             headers: {
                 "Content-Type": "Application/JSON",
             },
-            body: JSON.stringify(newListing),
+            body: JSON.stringify({ ...newListing, user_id: user?.id }),
         })
         .then((response) => response.json())
         .then((house) => {
@@ -46,7 +66,10 @@ function NewListing() {
             try {
                 Promise.all(imageFetches)
                 .then((results) => Promise.all(results.map(r => r.json())))
-                .then((results) => setHouseImages([...houseImages, ...results]))
+                .then((results) => {
+                    setHouseImages([...houseImages, ...results]);
+                    setFormData({ ...initialFormData });
+                })
                 .catch((error) => console.error("Error adding new listing images", error));
             } catch(e) {
                 console.error('image upload failed');
@@ -54,27 +77,10 @@ function NewListing() {
         })
         .catch((error) => console.error("Error adding new listing", error));
       };
-
-    
-      const [ formData, setFormData ] = useState({
-        price: '',
-        address: '',
-        sqft: '',
-        bedroom: '',
-        bathroom: '',
-        kitchen: '',
-        amenity: '',
-        image1: '',
-        image2: '',
-        image3: '',
-        image4: '',
-        pets: false,
-        user_id: user?.id,
-      });
     
     const handleChange = (e) => {
         const { name, value, type } = e.target;
-        if (name === 'pets') {
+        if (['pets', 'parking', 'heat_water'].includes(name)) {
             setFormData({
                 ...formData,
                 [name]: !!e.target.checked
@@ -95,17 +101,6 @@ function NewListing() {
     const handleSubmit = (e) => {
         e.preventDefault();
         addNewListing(formData);
-        setFormData({
-            price: '',
-            address: '',
-            sqft: '',
-            bedroom: '',
-            bathroom: '',
-            kitchen: '',
-            amenity: '',
-            pets: true,
-            user_id: user?.id,
-        });
     };
 
     return (
@@ -138,7 +133,7 @@ function NewListing() {
                 </div>
                 <div className="row">
                     <div className="col-25">
-                        <label htmlFor="adress">Adress</label>
+                        <label htmlFor="adress">Address</label>
                     </div>
                     <div className="col-75">
                         <input
@@ -163,6 +158,8 @@ function NewListing() {
                             name="type"
                             placeholder="Type of listing"
                             minLength="1"
+                            value={formData.type}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
@@ -256,13 +253,15 @@ function NewListing() {
                             type="text"
                             name="about"
                             placeholder="Write something about the listing"
-                            minLength="1"
+                            minLength="10"
+                            value={formData.about}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-25">
-                        <label htmlFor="train">Commuting</label>
+                        <label htmlFor="train">Public Transport</label>
                     </div>
                     <div className="col-75">
                         <input
@@ -271,6 +270,8 @@ function NewListing() {
                             name="train"
                             placeholder="Write nearby trains, subway, buses"
                             minLength="1"
+                            value={formData.train}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
@@ -285,6 +286,8 @@ function NewListing() {
                             name="airport"
                             placeholder="Write nearby airports"
                             minLength="1"
+                            value={formData.airport}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
@@ -299,12 +302,14 @@ function NewListing() {
                             name="security"
                             placeholder="Write form of security"
                             minLength="1"
+                            value={formData.security}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-25"> 
-                        <label htmlFor='pets'>Pets Allowed?</label>
+                        <label htmlFor='pets'>Pets Allowed</label>
                     </div>
                     <div className="col-75">
                         <input
@@ -346,83 +351,26 @@ function NewListing() {
                 </div>
                 <div className="row">
                     <div className="col-25">
-                        <label htmlFor="images">Image</label>
+                        <label htmlFor="images">Image(s)</label>
                     </div>
                     <div className="col-75">
                         <input
+                            multiple
                             type='file'
-                            name='image1'
+                            name='images'
                             accept="image/*"
-                            placeholder="image url 1"
+                            placeholder="images"
                             onChange={(e) => {
                                 if (e?.target?.files) {
-                                    images[0] = e.target.files[0];
-                                    setImages([...images])
+                                    setImages([...e.target.files])
                                 }
                             }}
                         />
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-25">
-                        <label htmlFor="images">Image</label>
-                    </div>
-                    <div className="col-75">
-                        <input 
-                            type='file'
-                            name='image2'
-                            accept="image/*"
-                            placeholder="image url 2"
-                            onChange={(e) => {
-                                if (e?.target?.files) {
-                                    images[1] = e.target.files[0];
-                                    setImages([...images])
-                                }
-                            }}
-                        />
-                    </div>
+                <div>
+                    <button className="submit-button">Submit New Listing</button>
                 </div>
-                <div className="row">
-                    <div className="col-25">
-                        <label htmlFor="images">Image</label>
-                    </div>
-                    <div className="col-75">
-                        <input 
-                            type='file'
-                            name='image3'
-                            accept="image/*"
-                            placeholder="image url 3"
-                            onChange={(e) => {
-                                if (e?.target?.files) {
-                                    images[2] = e.target.files[0];
-                                    setImages([...images])
-                                }
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-25">
-                        <label htmlFor="images">Image</label>
-                    </div>
-                    <div>
-                        <input 
-                            type='file'
-                            name='image4'
-                            accept="image/*"
-                            placeholder="image url 4"
-                            onChange={(e) => {
-                                if (e?.target?.files) {
-                                    images[3] = e.target.files[0];
-                                    setImages([...images])
-                                }
-                            }}
-                        />
-                    </div>
-                </div>
-                    <div>
-                        <button className="submit-button">Submit New Listing</button>
-                    </div>
                 </form>
                 <Link to='/listings'><button className="submit-button">Back to All Listings</button></Link>
             </div>
