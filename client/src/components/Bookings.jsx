@@ -23,8 +23,10 @@ function Bookings () {
         <div>
             {!signedIn ? 
                 (<div>
-                    <h2>Please sign in to use this page</h2>
-                    <Link to='/signin'>Login</Link>
+                    <section>
+                        <h2>Please sign in to see all your bookings</h2>
+                        <Link to='/signin'><button className="submit-button">Sign In</button></Link>
+                    </section>
                 </div>) :
                 (<div>
                     <h2>My Bookings</h2>

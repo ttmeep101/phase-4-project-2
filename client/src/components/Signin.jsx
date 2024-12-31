@@ -29,7 +29,7 @@ function Signin() {
         setAge('')
         setName('')
 
-        console.log("Sending the following payload to the backend:", values);
+        // console.log("Sending the following payload to the backend:", values);
 
         const endpoint = signup ? '/signup' : '/login'
 
@@ -44,7 +44,7 @@ function Signin() {
                 resp.json().then((user) => {
                     setSignedIn(true);
                     setUser(user);
-                    console.log("Login Sucessful. Current User: ",user)
+                    console.log("Login Sucessful.")
                     if(signup) {
                         alert("Account created successfully!")
                         navigate('/')
