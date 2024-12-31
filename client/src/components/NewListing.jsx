@@ -5,7 +5,9 @@ import { useUser } from "./UserContext";
 function NewListing() {
     const { houses, setHouses, houseImages, setHouseImages } = useOutletContext();
     const [ images, setImages ] = useState(Array(4).fill(''));
-    const { signedIn, setSignedIn } = useUser(false)
+    const { signedIn, setSignedIn } = useUser(false);
+    // TODO remove this hardcoded user id
+    const userId = '1';
         
     useEffect(() => {
         fetch('/check')
@@ -69,6 +71,7 @@ function NewListing() {
         image3: '',
         image4: '',
         pets: false,
+        user_id: userId,
       });
     
     const handleChange = (e) => {
@@ -103,6 +106,7 @@ function NewListing() {
             kitchen: '',
             amenity: '',
             pets: true,
+            user_id: userId,
         });
     };
 
@@ -116,11 +120,11 @@ function NewListing() {
             <div className="container">
                 <h2>Add a new listing:</h2>
                 <form onSubmit={handleSubmit}>
-                <div class="row">
-                    <div class="col-25">
-                        <label for="price">Price</label>
+                <div className="row">
+                    <div className="col-25">
+                        <label htmlFor="price">Price</label>
                     </div>
-                    <div class="col-75">
+                    <div className="col-75">
                         <input
                             className="new-listing-input"
                             type='number'
@@ -134,7 +138,7 @@ function NewListing() {
                 </div>
                 <div className="row">
                     <div className="col-25">
-                        <label for="adress">Adress</label>
+                        <label htmlFor="adress">Adress</label>
                     </div>
                     <div className="col-75">
                         <input
@@ -142,7 +146,7 @@ function NewListing() {
                             type='text'
                             name='address'
                             placeholder="Address"
-                            minlength="10"
+                            minLength="10"
                             value={formData.address}
                             onChange={handleChange}
                         />
@@ -150,7 +154,7 @@ function NewListing() {
                 </div>
                 <div className="row">
                     <div className="col-25">
-                        <label for="sqft">Sqft</label>
+                        <label htmlFor="sqft">Sqft</label>
                     </div>
                     <div className="col-75">
                         <input
@@ -166,7 +170,7 @@ function NewListing() {
                 </div>
                 <div className="row">
                     <div className="col-25">
-                        <label for="bedrooms">Bedrooms</label>
+                        <label htmlFor="bedrooms">Bedrooms</label>
                     </div>
                     <div className="col-75">
                         <input
@@ -182,7 +186,7 @@ function NewListing() {
                 </div>
                 <div className="row">
                     <div className="col-25">
-                        <label for="bathrooms">Bathrooms</label>
+                        <label htmlFor="bathrooms">Bathrooms</label>
                     </div>
                     <div className="col-75">
                         <input
@@ -198,7 +202,7 @@ function NewListing() {
                 </div>
                 <div className="row">
                     <div className="col-25">
-                        <label for="kitchen">Kitchen</label>
+                        <label htmlFor="kitchen">Kitchen</label>
                     </div>
                     <div className="col-75">
                         <input
@@ -214,7 +218,7 @@ function NewListing() {
                 </div>
                 <div className="row">
                     <div className="col-25">
-                        <label for="amenity">Amenity</label>
+                        <label htmlFor="amenity">Amenity</label>
                     </div>
                     <div className="col-75">
                         <input
@@ -222,7 +226,7 @@ function NewListing() {
                             type='text'
                             name='amenity'
                             placeholder="Amenity"
-                            minlength="1"
+                            minLength="1"
                             value={formData.amenity}
                             onChange={handleChange}
                         />
@@ -230,7 +234,7 @@ function NewListing() {
                 </div>
                 <div className="row">
                     <div className="col-25">
-                        <label for="about">About</label>
+                        <label htmlFor="about">About</label>
                     </div>
                     <div className="col-75">
                         <input
@@ -238,7 +242,7 @@ function NewListing() {
                             type="text"
                             name="about"
                             placeholder="Write something about the listing"
-                            minlength="1"
+                            minLength="1"
                         />
                     </div>
                 </div>

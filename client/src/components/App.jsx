@@ -31,7 +31,7 @@ function App() {
 
   const bookedOrNot = (id, dateTime, userId) => {
     const houseIsBooked = bookings.find((housetoBook) => {
-      return housetoBook.listing_id === id;
+      return housetoBook.listing_id.toString() === id.toString();
     });
     if (houseIsBooked) {
       fetch(`http://localhost:5555/bookings/${houseIsBooked.id}`, {
@@ -41,7 +41,7 @@ function App() {
         }
       })
       .then(() => {
-        const newBooking = bookings.filter((housetoBook) => id !== housetoBook.listing_id);
+        const newBooking = bookings.filter((housetoBook) => id.toString() !== housetoBook.listing_id.toString());
         setBookings([...newBooking]);
       })
       .catch((error) => console.error('Error removing house from bookings', error));
@@ -62,7 +62,7 @@ function App() {
   };
 
   const checkIfBooked = (id) => {
-    return bookings.find((housetoBook) => housetoBook.listing_id === id)
+    return bookings.find((housetoBook) => housetoBook.listing_id.toString() === id.toString())
   }
 
   return (

@@ -59,7 +59,8 @@ class Listings(Resource):
                 bathroom=param['bathroom'],
                 kitchen=param['kitchen'],
                 amenity=param['amenity'],
-                pets=param['pets']
+                pets=param['pets'],
+                user_id=param['user_id']
             )
             db.session.add(new_listing)
             db.session.commit()

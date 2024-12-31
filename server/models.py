@@ -51,7 +51,7 @@ class Listing(db.Model, SerializerMixin):
     images = db.relationship('Image', back_populates='listing', cascade='all, delete-orphan')
 
     #serialization rules
-    serialize_rules = ('-bookings','-images')
+    serialize_rules = ('-bookings', '-images', '-users')
 
     # Add validation
     @validates('price')
@@ -117,7 +117,7 @@ class User(db.Model, SerializerMixin):
     listings = db.relationship('Listing', back_populates='user', cascade='all, delete-orphan')
 
     #serialize rules
-    serialize_rules = ('-bookings.user',)
+    serialize_rules = ('-bookings','-listings')
 
     # Add validation
     @validates('name')
@@ -172,7 +172,7 @@ class Booking(db.Model, SerializerMixin):
     listing = db.relationship('Listing', back_populates='bookings')
 
     #serialize
-    serialize_rules = ('-listing.booking', '-user.booking')
+    serialize_rules = ('-listings', '-users')
 
     # Add validation
 

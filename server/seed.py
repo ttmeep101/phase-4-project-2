@@ -18,58 +18,59 @@ with app.app_context():
     User.query.delete()
 
     # # #create an empty list
-    # # users = []
+    users = []
 
     # # #add some user instances to the list
-    # # for n in range(5):
-    # #     user = User(
-    # #         username=fake.user_name(),
-    # #         password_hash=fake.word(),
-    # #         name=fake.first_name(),
-    # #         age=random.randint(18, 120)
-    # #     )
-    # #     users.append(user)
+    for n in range(5):
+        user = User(
+            username=fake.user_name(),
+            password_hash='password',
+            name=fake.first_name(),
+            age=random.randint(18, 120)
+        )
+        users.append(user)
     
-    # db.session.add_all(users)
-    # db.session.commit()
+    db.session.add_all(users)
+    db.session.commit()
 
     #delete all row in Listing table
     Listing.query.delete()
 
     #create an empty list
-    # listings = []
-    # amenities = ['backyard', 'pool', 'porch', 'laundry', 'elevator', 'A/C', 'parking', 'pets allowed']
+    listings = []
+    amenities = ['backyard', 'pool', 'porch', 'laundry', 'elevator', 'A/C', 'parking', 'pets allowed']
 
-    # #add some listings instances to the list
-    # for item in range(15):
-    #     listing = Listing(
-    #         price=random.randint(50000, 1000000000),
-    #         address=fake.address(),
-    #         sqft=random.randint(100, 10000),
-    #         bedroom=random.randint(1, 20),
-    #         bathroom=random.randint(1, 20),
-    #         kitchen=random.randint(1, 20),
-    #         amenity=rc(amenities),
-    #         pets=fake.boolean()
-    #         )
-    #     listings.append(listing)
+    #add some listings instances to the list
+    for item in range(15):
+        listing = Listing(
+            price=random.randint(50000, 1000000000),
+            address=fake.address(),
+            sqft=random.randint(100, 10000),
+            bedroom=random.randint(1, 20),
+            bathroom=random.randint(1, 20),
+            kitchen=random.randint(1, 20),
+            amenity=rc(amenities),
+            pets=fake.boolean(),
+            user_id=1
+            )
+        listings.append(listing)
     
-    # db.session.add_all(listings)
-    # db.session.commit()
+    db.session.add_all(listings)
+    db.session.commit()
 
-    # roomTypes = ['exterior', 'bedroom', 'kitchen', 'livingroom']
+    roomTypes = ['exterior', 'bedroom', 'kitchen', 'livingroom']
     Image.query.delete()
 
-    # images = []
-    # for i in range(1,16):
-    #     for roomType in roomTypes:
-    #         image = Image(
-    #             file=f"/images/{roomType}{i}.jpg",
-    #             listing_id=i
-    #         )
-    #         images.append(image)
+    images = []
+    for i in range(1,16):
+        for roomType in roomTypes:
+            image = Image(
+                file=f"/images/{roomType}{i}.jpg",
+                listing_id=i
+            )
+            images.append(image)
     
-    # db.session.add_all(images)
+    db.session.add_all(images)
     db.session.commit()
     
 
