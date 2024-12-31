@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from 'react-router-dom';  
+import { useUser } from "./UserContext";
 
 function Home() {
+  const { signedIn } = useUser();
+
   return (
     <div className="home">
       <section className="section-title">
@@ -29,7 +32,9 @@ function Home() {
           Keep track of upcoming appointments, set reminders, and ensure you never miss a showing.
           Whether you're a renter or a property manager, our web app makes apartment tour booking management seamless and efficient.
         </p>
-        <Link to='/bookings'><button className="submit-button">See all my bookings</button></Link>
+        {signedIn &&
+          <Link to='/bookings'><button className="submit-button">See all my bookings</button></Link>
+        }
       </section>
       <section>
         <h2 className="section-header">Manage your Rentals</h2>
@@ -37,7 +42,9 @@ function Home() {
         With streamlined tools for scheduling and viewing reports, you can effortlessly keep your rental business organized and efficient. 
         Take control of your properties and enjoy a hassle-free management experience today!
         </p>
-        <Link to='/signin'><button className="submit-button">Sign In</button></Link>
+        {!signedIn &&
+          <Link to='/signin'><button className="submit-button">Sign In</button></Link>
+        }
       </section>
       
     </div>

@@ -5,9 +5,7 @@ import { useUser } from "./UserContext";
 function NewListing() {
     const { houses, setHouses, houseImages, setHouseImages } = useOutletContext();
     const [ images, setImages ] = useState(Array(4).fill(''));
-    const { signedIn, setSignedIn } = useUser(false);
-    // TODO remove this hardcoded user id
-    const userId = '1';
+    const { user, signedIn, setSignedIn } = useUser();
         
     useEffect(() => {
         fetch('/check')
@@ -71,7 +69,7 @@ function NewListing() {
         image3: '',
         image4: '',
         pets: false,
-        user_id: userId,
+        user_id: user?.id,
       });
     
     const handleChange = (e) => {
@@ -106,7 +104,7 @@ function NewListing() {
             kitchen: '',
             amenity: '',
             pets: true,
-            user_id: userId,
+            user_id: user?.id,
         });
     };
 
