@@ -32,9 +32,7 @@ function Home() {
           Keep track of upcoming appointments, set reminders, and ensure you never miss a showing.
           Whether you're a renter or a property manager, our web app makes apartment tour booking management seamless and efficient.
         </p>
-        {signedIn &&
-          <Link to='/bookings'><button className="submit-button">See all my bookings</button></Link>
-        }
+        <Link to='/bookings'><button className="submit-button">See all my bookings</button></Link>
       </section>
       <section>
         <h2 className="section-header">Manage your Rentals</h2>

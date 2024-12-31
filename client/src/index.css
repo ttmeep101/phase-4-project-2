@@ -119,10 +119,10 @@ body {
 }
 
 .home h1 {
-  font-size: 100px;
-  color: #0bb62d;
+  font-size: 120px;
+  color: #09bb3c;
   text-align: center;
-  text-shadow: 2px 2px rgb(11, 36, 16);
+  text-shadow: 2px 2px rgb(1, 1, 8);
   word-spacing: 15px;
   margin-bottom: 50px;
 }
@@ -131,7 +131,7 @@ h2 {
   font-size: 30px;
   color: #1ec342;
   text-align: center;
-  text-shadow: 1px 2px rgb(18, 87, 136);
+  text-shadow: 1px 2px rgb(0, 6, 10);
 }
 
 .searchbar {
