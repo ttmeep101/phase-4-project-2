@@ -53,7 +53,9 @@ function HouseDetails(){
         }
     }
 
-    const {address, price, sqft, bedroom, bathroom, kitchen, amenity, pets} = house;
+    const {address, price, sqft, bedroom, bathroom, kitchen, amenity,
+        pets, about, type, parking, heat_water,
+        security, train, airport} = house;
 
     const firstHouseImage = houseImages && houseImages.find((houseImage) => {
         return houseImage?.listing_id?.toString() === id?.toString();
@@ -101,22 +103,20 @@ function HouseDetails(){
             </section>
             <section>
                 <h2>About</h2>
-                <p>paragraph here about the apartment</p>
+                <p>{about}</p>
             </section>
             <section>
                 <h2>Highlights</h2>
                 <h4>Listing Features</h4>
                     <ul>
-                        <li>Listing type: house, apartment, condo</li>
-                        <li>Exterior: </li>
-                        <li>Parking: yes or no</li>
-                        <li>Heat and Water Included: yes or no</li>
+                        <li>Listing type: {type}</li>
+                        <li>Parking: {parking?.toString()}</li>
+                        <li>Heat and Water Included: {heat_water?.toString()}</li>
                     </ul>
                 <h4>Community Features</h4>
                     <ul>
                         <li>Amenity: {amenity}</li>
-                        <li>Security: </li>
-                        <li>Fitness center:</li>
+                        <li>Security: {security}</li>
                     </ul>
             </section>
             <section>
@@ -131,8 +131,8 @@ function HouseDetails(){
             <section>
                 <h2>Public Transportation</h2>
                 <ul>
-                    <li>Train/Subways: </li>
-                    <li>Nearby Airports: </li>
+                    <li>Train/Subways: {train}</li>
+                    <li>Nearby Airports: {airport}</li>
                 </ul>
             </section>
         </div>
