@@ -16,7 +16,7 @@ function Listings() {
     };
 
     const filteredHouse = houses
-        .filter((listing) => listing.address.toLowerCase().includes(searchTerm.toLowerCase()))
+        .filter((listing) => listing?.address?.toLowerCase()?.includes(searchTerm?.toLowerCase()))
         .sort((a, b) => {
             if (sort === 'asc') {
                 return a.price - b.price;
