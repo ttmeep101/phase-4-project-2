@@ -129,9 +129,9 @@ function HouseDetails(){
                 </ul>
             </section>
             <section>
-                <h2>Public Transportation</h2>
+                <h2>Transportation</h2>
                 <ul>
-                    <li>Train/Subways: {train}</li>
+                    <li>Public Transportation: {train}</li>
                     <li>Nearby Airports: {airport}</li>
                 </ul>
             </section>
