@@ -111,7 +111,7 @@ function Signin() {
                     <input 
                         id='password'
                         name='password'
-                        type='text'
+                        type='password'
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}

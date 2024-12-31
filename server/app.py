@@ -78,26 +78,26 @@ class ListingsById(Resource):
             print(f'error occured: {e}')
             return make_response({'error': 'Listing not found'}, 404)
         
-    def patch(self, id):
+    def put(self, id):
         try:
             listing = db.session.execute(db.select(Listing).filter_by(id=id)).scalar_one()
             param = request.json
             for attr in param:
-                setattr(listing, attr, param['attr'])
+                setattr(listing, attr, param[attr])
             db.session.commit()
             return make_response(listing.to_dict(), 202)
         except NoResultFound:
             return make_response({'error': 'Listing not found'}, 404)
         except Exception as e:
             print(f'error occured: {e}')
-            return make_response({'error': ['validation errors']}, 400)
+            return make_response({'error': [e]}, 400)
     
     def delete(self, id):
         try:
             listing = db.session.execute(db.select(Listing).filter_by(id=id)).scalar_one()
             db.session.delete(listing)
             db.session.commit()
-            return make_response(jsonify(''), 404)
+            return make_response(jsonify(''), 204)
         except Exception as e:
             print(f'error occured: {e}')
             return make_response({'error': 'Listing not found'}, 404)

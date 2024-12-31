@@ -52,6 +52,7 @@ function Listings() {
                         amenity={house.amenity}
                         img={house.img}
                         pets={house.pets}
+                        ownerUser={house.user_id}
                 />
                 ))}
             </ul>
