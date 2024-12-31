@@ -183,8 +183,6 @@ function HouseDetails(){
         }
     };
 
-    
-
     function editListing(updatedListing) {
         fetch(`${id}`, {
             method: "PUT",
