@@ -1,31 +1,17 @@
 import React, { useState } from "react";
 import { Link, useOutletContext, useParams } from "react-router-dom";
+import { useUser } from "./UserContext";
 
 function HouseDetails(){
-    const { houses, checkIfBooked, bookedOrNot, bookings, setBookings, houseImages } = useOutletContext();
+    const { houses, checkIfBooked, bookedOrNot, houseImages } = useOutletContext();
+    const { user, signedIn } = useUser();
     const { id } = useParams();
-    // TODO remove this hardcoded user id
-    const userId = '1';
 
     const isBooked = checkIfBooked(id);
     const [dateTimePickerIsOpen, setDateTimePickerIsOpen] = useState(false);
     const [dateTimePickerError, setDateTimePickerError] = useState(false);
     const [date, setDate] = useState();
     const [time, setTime] = useState();
-    
-    const initialData = {
-        price: '',
-        address: '',
-        sqft: '',
-        bedroom: '',
-        bathroom: '',
-        kitchen: '',
-        amenity: '',
-        img: '',
-        pets: false,
-    };
-    
-    const [updatedListing, setUpdatedListing] = useState(initialData);
 
     const house = houses.find((house) => house?.id?.toString() === id.toString());
     if (!house) {
@@ -60,7 +46,7 @@ function HouseDetails(){
     const bookedOrNotWithValidTime = () => {
         const dateTime = new Date(`${date}T${time}`);
         if (dateTime instanceof Date && !isNaN(dateTime)) {
-            bookedOrNot(id, dateTime.toISOString(), userId);
+            bookedOrNot(id, dateTime.toISOString(), user?.id);
             setDateTimePickerIsOpen(false);
         } else {
             setDateTimePickerError(true);
@@ -87,15 +73,17 @@ function HouseDetails(){
                 <p>Kitchen: {kitchen}</p>
                 <p>Amenity: {amenity}</p>
                 <p>Pets allowed: {pets?.toString()}</p>
-                <button className="submit-button" onClick={() => {
-                    if (isBooked) {
-                        bookedOrNot(id);
-                    } else {
-                        setDateTimePickerIsOpen(true)        
-                    }
-                }}>
-                    {isBooked ? 'Remove From Booking' : 'Add To Booking'}
-                </button>
+                {signedIn &&
+                    <button className="submit-button" onClick={() => {
+                        if (isBooked) {
+                            bookedOrNot(id);
+                        } else {
+                            setDateTimePickerIsOpen(true)        
+                        }
+                    }}>
+                        {isBooked ? 'Remove From Booking' : 'Add To Booking'}
+                    </button>
+                }
                 { dateTimePickerIsOpen && (
                     <div className="date-time-picker">
                         {dateTimePickerError && (
@@ -104,8 +92,6 @@ function HouseDetails(){
                         <label htmlFor="booking-date">Booking time (date and time):</label>
                         <input type="date" id="booking-date" name="booking-date" onChange={handleDateChange} />
                         <input type="time" id="booking-time" name="booking-time" onChange={handleTimeChange} />
-                        {// TODO replace 1 BELOW WITH USER_ID, userId, user-id, whatever it ends up being called
-                        }
                         <button className="submit-button" type="submit" disabled={dateTimePickerError} onClick={() => bookedOrNotWithValidTime()}>Submit</button>
                         <button className="submit-button" onClick={() => setDateTimePickerIsOpen(false)}>Cancel</button>
                     </div>

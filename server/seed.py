@@ -64,8 +64,9 @@ with app.app_context():
     images = []
     for i in range(1,16):
         for roomType in roomTypes:
+            randomNumber = random.randint(1, 6)
             image = Image(
-                file=f"/images/{roomType}{i}.jpg",
+                file=f"/images/{roomType}{randomNumber}.png",
                 listing_id=i
             )
             images.append(image)

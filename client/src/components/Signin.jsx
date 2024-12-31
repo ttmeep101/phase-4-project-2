@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useUser } from "./UserContext";
 
 function Signin() {
-    const { signedIn, setSignedIn } = useUser(false)
+    const {  setSignedIn, setUser } = useUser(false)
     const [signup, setSignup] = useState(false)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -42,7 +42,8 @@ function Signin() {
         }).then((resp) => {
             if (resp.ok) {
                 resp.json().then((user) => {
-                    setSignedIn(true)
+                    setSignedIn(true);
+                    setUser(user);
                     console.log("Login Sucessful. Current User: ",user)
                     if(signup) {
                         alert("Account created successfully!")

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route, Outlet } from "react-router-dom";
-import { UserProvider } from "./UserContext";
+import { Outlet } from "react-router-dom";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
+import { useUser } from "./UserContext";
 
 function App() {
+  const { user, signedIn } = useUser();
   const [houses, setHouses] = useState([])
   const [bookings, setBookings] = useState([])
   const [houseImages, setHouseImages] = useState([]);
@@ -17,17 +18,21 @@ function App() {
       })
       .catch((error) => console.error("Error fetching listings", error));
 
-      fetch('http://localhost:5555/bookings')
-      .then((resp) => resp.json())
-      .then((data) => setBookings(data))
-      .catch((error) => console.error("Error fetching bookings", error));
-      
       fetch(`http://localhost:5555/listing-images`)
         .then(resp => resp.json()).then((data) => {
           setHouseImages(data);
         })
         .catch((error) => console.error("Error fetching images", error));
-  }, [])
+  }, []);
+
+  useEffect(() => {    
+    if (signedIn) {
+      fetch(`http://localhost:5555/users-bookings/${user?.id}`)
+        .then((resp) => resp.json())
+        .then((data) => setBookings(data))
+        .catch((error) => console.error("Error fetching bookings", error));
+    }
+  }, [signedIn, user?.id]);
 
   const bookedOrNot = (id, dateTime, userId) => {
     const houseIsBooked = bookings.find((housetoBook) => {

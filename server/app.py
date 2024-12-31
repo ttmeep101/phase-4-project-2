@@ -163,8 +163,20 @@ class BookingsById(Resource):
             print(f'error occured: {e}')
             return make_response({'error': 'Booking not found'}, 404)
 
+class BookingsByUserId(Resource):
+    def get(self, id):
+        try:
+            bookings = db.session.execute(db.select(Booking).filter_by(user_id=id)).scalars()
+            list_booking = [booking.to_dict() for booking in bookings]
+            return make_response(list_booking)
+        except Exception as e:
+            print(f'error occured: {e}')
+            return make_response({'error': 'Booking not found'}, 404)
+
+
 api.add_resource(Bookings, '/bookings')
 api.add_resource(BookingsById, '/bookings/<int:id>')
+api.add_resource(BookingsByUserId, '/users-bookings/<int:id>')
 
 class Signup(Resource):
     def post(self):

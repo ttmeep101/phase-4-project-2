@@ -1,29 +1,36 @@
-import React, { useState, useEffect} from "react";
+import React, { useEffect} from "react";
 import { NavLink } from "react-router-dom";
 import { useUser } from "./UserContext";
 
 function NavBar () {
 
-    const { signedIn, setSignedIn } = useUser(false)
+    const { signedIn, setSignedIn, setUser } = useUser();
     
     useEffect(() => {
         fetch('/check')
-        .then((resp) => {
-            if(resp.ok) {
-                setSignedIn(true)
+        .then((resp) => resp.json())
+        .then((data) => {
+            if(data?.id) {
+                setSignedIn(true);
+                setUser(data);
             }
             else {
-                setSignedIn(false)
+                setSignedIn(false);
+                setUser(null);
             }
         })
-    }, [setSignedIn])
+    }, [setSignedIn, setUser])
 
-    function logout() {
+    function logout(e) {
+        e.preventDefault();
         fetch('/logout', {
             method: 'DELETE'
         })
-        .then((resp) => resp.json)
-        .then((data) => setSignedIn(false))
+        .then(() => {})
+        .then(() => {
+            setSignedIn(false);
+            setUser(null);
+        })
     }
 
     return (
@@ -35,7 +42,7 @@ function NavBar () {
                 <NavLink className="headerlink" to='/bookings'>Bookings</NavLink>
                 {!signedIn ? 
                 (<NavLink className="headerlink" to='/signin'>Sign In</NavLink>) :
-                (<button className='headerlink' onClick={logout}>Logout</button>)}
+                (<NavLink className='headerlink' onClick={logout}>Logout</NavLink>)}
                 
                 <NavLink className="headerlink" to='/create-listing'>Create Listing</NavLink>
             </span>
