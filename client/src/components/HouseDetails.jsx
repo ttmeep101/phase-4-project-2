@@ -4,6 +4,8 @@ import { Link, useOutletContext, useParams } from "react-router-dom";
 function HouseDetails(){
     const { houses, checkIfBooked, bookedOrNot, bookings, setBookings, houseImages } = useOutletContext();
     const { id } = useParams();
+    // TODO remove this hardcoded user id
+    const userId = '1';
 
     const isBooked = checkIfBooked(id);
     const [dateTimePickerIsOpen, setDateTimePickerIsOpen] = useState(false);
@@ -25,7 +27,7 @@ function HouseDetails(){
     
     const [updatedListing, setUpdatedListing] = useState(initialData);
 
-    const house = houses.find((house) => house?.id?.toString() === id);
+    const house = houses.find((house) => house?.id?.toString() === id.toString());
     if (!house) {
         return (
             <div className="details">
@@ -58,7 +60,7 @@ function HouseDetails(){
     const bookedOrNotWithValidTime = () => {
         const dateTime = new Date(`${date}T${time}`);
         if (dateTime instanceof Date && !isNaN(dateTime)) {
-            bookedOrNot(id, dateTime.toISOString(), 1);
+            bookedOrNot(id, dateTime.toISOString(), userId);
             setDateTimePickerIsOpen(false);
         } else {
             setDateTimePickerError(true);

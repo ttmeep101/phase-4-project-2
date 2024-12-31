@@ -103,6 +103,11 @@ body {
   transform: translateY(-5px);
 }
 
+.card-link {
+  color: black;
+  text-decoration: none;
+}
+
 .cardlist {
   display: flex;
   list-style: none;
@@ -147,6 +152,7 @@ input#search {
   color: rgb(236, 240, 239);
   font-size: 18px;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .submit-button.sort-button {
