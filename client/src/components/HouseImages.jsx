@@ -19,7 +19,7 @@ function HouseImages(){
         <div className="details">
             <section className="image-gallery">
                 {houseImgs.map(houseImage => (
-                    <div className="gallery-image-container">
+                    <div className="gallery-image-container" key={houseImage.id}>
                         <Link className="gallery-image-link" to={`/images/${houseImage?.id}`}>
                             <img className="gallery-image" src={houseImage?.file} alt={houseImage?.id} key={houseImage?.id} />
                         </Link>

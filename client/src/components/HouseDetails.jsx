@@ -88,7 +88,9 @@ function HouseDetails(){
         }
     }
 
-    const {address, price, sqft, bedroom, bathroom, kitchen, amenity, pets} = house;
+    const {address, price, sqft, bedroom, bathroom, kitchen, amenity,
+        pets, about, type, parking, heat_water,
+        security, train, airport} = house;
 
     const firstHouseImage = houseImages && houseImages.find((houseImage) => {
         return houseImage?.listing_id?.toString() === id?.toString();
