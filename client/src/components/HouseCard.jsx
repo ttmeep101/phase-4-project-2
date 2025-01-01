@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom"; 
 import { useOutletContext } from "react-router-dom";
 
-function HouseCard({id, price, address, sqft, bedroom, bathroom, kitchen, amenity, img, pets, bookingId}) {
+function HouseCard({id, price, address, sqft, bedroom, bathroom, kitchen, amenity, img, pets, bookingId, bookingDateTime = null}) {
     const { houseImages } = useOutletContext();
     
     const firstHouseImage = houseImages && houseImages.find((houseImage) => {
@@ -17,9 +17,12 @@ function HouseCard({id, price, address, sqft, bedroom, bathroom, kitchen, amenit
                 <ul className="cardlist">
                     <li>{bedroom} beds | </li>
                     <li>{bathroom} bath | </li>
-                    <li>{sqft} sqft</li>       
+                    <li>{sqft} sqft</li>
                 </ul>
                 <p>{address}</p>
+                { !!bookingDateTime && (
+                    <p>booking date/time: {bookingDateTime}</p>
+                )}
                 <button className="submit-button">More Details</button>
             </div>
         </Link>

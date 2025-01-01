@@ -21,6 +21,8 @@ const routes = createBrowserRouter([{
     { path: '/signin', element: <Signin /> },
     { path: '/create-listing', element: <NewListing /> },
     { path: '/images/:id', element: <SingleImage /> },
+    { path: '/listings/:id/edit', element: <NewListing isEdit={true} />},
+    { path: '/my-listings', element: <Listings isMyListings={true} /> },
   ]
 }])
 

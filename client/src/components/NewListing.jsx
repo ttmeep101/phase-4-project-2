@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useOutletContext, Link, useNavigate } from "react-router-dom";
+import { useOutletContext, Link, useNavigate, useParams } from "react-router-dom";
 import { useUser } from "./UserContext";
 
-function NewListing({listingToEdit = null, closeEditListing = null}) {
+function NewListing({isEdit = false}) {
     const { houses, setHouses, houseImages, setHouseImages } = useOutletContext();
     const [ images, setImages ] = useState([]);
     const { user, signedIn, setSignedIn } = useUser();
+    const { id } = useParams();
     const navigate = useNavigate();
+    const listingToEdit = isEdit ? houses.find(house => house?.id?.toString() === id?.toString()) : null;
     const initialFormData = {
         price: listingToEdit?.price || '',
         address: listingToEdit?.address || '',
@@ -82,12 +84,8 @@ function NewListing({listingToEdit = null, closeEditListing = null}) {
                     : houseImages;
                     setHouseImages([...oldHouseImages, ...results]);
                     setFormData({ ...initialFormData });
-                    if (isExistingListing) {
-                        if (typeof closeEditListing === 'function') closeEditListing();
-                    } else {
-                        navigate(`/listings/${house.id}`);
-                    }
-                    
+                    window.scrollTo({top: 0}); 
+                    navigate(`/listings/${house.id}`);
                 })
                 .catch((error) => console.error("Error adding new listing images", error));
             } catch(e) {
@@ -388,9 +386,10 @@ function NewListing({listingToEdit = null, closeEditListing = null}) {
                     </div>
                 </div>
                 <div>
-                    <button className="submit-button">{!!listingToEdit ? 'Edit Listing' : 'Submit New Listing' }</button>
+                    <button className="submit-button">{!!listingToEdit ? 'Submit Changes' : 'Submit New Listing' }</button>
                 </div>
                 </form>
+                <Link to={`/listings/${id}`}><button className="submit-button">Cancel</button></Link>
                 <Link to='/listings'><button className="submit-button">Back to All Listings</button></Link>
             </div>
         )
