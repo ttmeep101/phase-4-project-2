@@ -92,7 +92,8 @@ class ListingsById(Resource):
             for attr in param:
                 setattr(listing, attr, param[attr])
             db.session.commit()
-            return make_response(listing.to_dict(), 202)
+            new_listing = db.session.execute(db.select(Listing).filter_by(id=id)).scalar_one()
+            return make_response(new_listing.to_dict(), 202)
         except NoResultFound:
             return make_response({'error': 'Listing not found'}, 404)
         except Exception as e:
@@ -302,6 +303,14 @@ class ImagesByListingId(Resource):
         except Exception as e:
             print(f'error occured: {e}')
             return make_response({'error': 'Image upload failed'}, 404)
+    def delete(self, id):
+        try:
+            db.session.query(Image).filter_by(listing_id = id).delete()
+            db.session.commit()
+            return make_response(jsonify(''), 204)
+        except Exception as e:
+            print(f'error occured: {e}')
+            return make_response({'error': 'Images not found'}, 404)
         
 api.add_resource(Images, '/listing-images')
 api.add_resource(ImagesByListingId, '/listing-images/<int:id>')
