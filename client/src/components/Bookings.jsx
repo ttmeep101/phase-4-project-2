@@ -41,7 +41,10 @@ function Bookings () {
                     <h2>My Bookings</h2>
                     <ul className="cards">
                         {bookings?.length <= 0 ? (
-                            <div>No bookings found</div>
+                            <div>
+                                <div>No bookings found</div>
+                                <Link to='/listings'><button className="submit-button">See All Listings</button></Link>
+                            </div>
                         ) : (
                             bookings.map((house) => (
                                 <HouseCard

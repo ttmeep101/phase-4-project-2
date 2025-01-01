@@ -102,7 +102,7 @@ function HouseDetails(){
 
     return (
         <div className="details">
-            <section>
+            <section className="main-details-section">
                 <Link to={`/listings/${id}/images`}>
                     <img className="detail-image" src={firstHouseImage?.file} alt={id} />
                 </Link>
