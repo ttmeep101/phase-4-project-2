@@ -206,6 +206,10 @@ section {
   min-height: 30vh;
 }
 
+.main-details-section {
+  text-align: center;
+}
+
 .detail-image {
   width: 100%;
   height: 100%;
@@ -242,7 +246,7 @@ section {
   height: 20px;
 }
 
-input[type=text], select, textarea {
+input[type=text], input[type=password], select, textarea {
   width: 95%;
   padding: 12px;
   border: 1px solid #ccc;

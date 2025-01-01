@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useOutletContext, Link } from "react-router-dom";
 import HouseCard from "./HouseCard";
 import { useUser } from "./UserContext";
 
@@ -8,6 +8,10 @@ function Listings({isMyListings = false}) {
     const { user } = useUser();
     const [sort, setSort] = useState('asc');
     const [searchTerm, setSearchTerm ] = useState('');
+
+    useEffect(() => {
+        setSearchTerm('');
+    }, [isMyListings]);
 
     const handleSortPrice = () => {
         setSort((prevSort) => (prevSort === 'asc' ? 'desc' : 'asc'))
@@ -30,6 +34,7 @@ function Listings({isMyListings = false}) {
 
     return (
         <main>
+            <h2>{isMyListings ? 'My Listings' : 'All Listings'}</h2>
             <div className="searchbar">
                 <label htmlFor="search">Search Listings:</label>
                 <input type="text"
@@ -44,7 +49,8 @@ function Listings({isMyListings = false}) {
             <ul className="cards">
                 {filteredHouse.length <= 0 ? (
                     <div>
-                        No listings found
+                        <p>No listings found</p>
+                        <Link to='/create-listing'><button className="submit-button">Create A listing</button></Link>
                     </div>
                 ) : (
                     filteredHouse.map((house) => (

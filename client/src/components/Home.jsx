@@ -40,9 +40,11 @@ function Home() {
         With streamlined tools for scheduling and viewing reports, you can effortlessly keep your rental business organized and efficient. 
         Take control of your properties and enjoy a hassle-free management experience today!
         </p>
-        {!signedIn &&
+        {!signedIn ? (
           <Link to='/signin'><button className="submit-button">Sign In</button></Link>
-        }
+        ) : (
+          <Link to='/my-listings'><button className="submit-button">See All My Listings</button></Link>
+        )}
       </section>
       
     </div>
