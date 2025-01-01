@@ -1,28 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { useOutletContext, Link } from "react-router-dom";
+import { useOutletContext, Link, useNavigate } from "react-router-dom";
 import { useUser } from "./UserContext";
 
-function NewListing() {
+function NewListing({listingToEdit = null, closeEditListing = null}) {
     const { houses, setHouses, houseImages, setHouseImages } = useOutletContext();
     const [ images, setImages ] = useState([]);
     const { user, signedIn, setSignedIn } = useUser();
-
+    const navigate = useNavigate();
     const initialFormData = {
-        price: '',
-        address: '',
-        sqft: '',
-        bedroom: '',
-        bathroom: '',
-        kitchen: '',
-        amenity: '',
-        pets: false,
-        about: '',
-        type: '',
-        parking: false,
-        heat_water: false,
-        train: '',
-        airport: '',
-        security: ''
+        price: listingToEdit?.price || '',
+        address: listingToEdit?.address || '',
+        sqft: listingToEdit?.sqft || '',
+        bedroom: listingToEdit?.bedroom || '',
+        bathroom: listingToEdit?.bathroom || '',
+        kitchen: listingToEdit?.kitchen || '',
+        amenity: listingToEdit?.amenity || '',
+        pets: listingToEdit?.pets || false,
+        about: listingToEdit?.about || '',
+        type: listingToEdit?.type || '',
+        parking: listingToEdit?.parking || false,
+        heat_water: listingToEdit?.heat_water || false,
+        train: listingToEdit?.train || '',
+        airport: listingToEdit?.airport || '',
+        security: listingToEdit?.security || ''
     };
     
     const [ formData, setFormData ] = useState({...initialFormData});
@@ -39,9 +39,10 @@ function NewListing() {
         })
     }, [setSignedIn])
 
-    const addNewListing = (newListing) => {
-        fetch("/listings", {
-            method: "POST",
+    const addOrEditListing = (newListing) => {
+        const isExistingListing = !!listingToEdit;
+        fetch(isExistingListing ? `/listings/${listingToEdit.id}` : "/listings", {
+            method: isExistingListing  ? "PUT" : "POST",
             headers: {
                 "Content-Type": "Application/JSON",
             },
@@ -49,7 +50,16 @@ function NewListing() {
         })
         .then((response) => response.json())
         .then((house) => {
-            setHouses([...houses, house]);
+            const oldHouses = isExistingListing ? 
+                houses.filter((house) => house?.id?.toString() !== listingToEdit?.id?.toString()) 
+                : houses;
+            setHouses([...oldHouses, house]);
+            const imagesToDelete = isExistingListing && images.length > 0;
+            if (imagesToDelete) {
+                fetch(`/listing-images/${house.id}`, {
+                    method: "DELETE",
+                });
+            }
             const imageFetches = images.reduce((result, image) => {
                 if (!!image) {
                     const data = new FormData();
@@ -67,8 +77,17 @@ function NewListing() {
                 Promise.all(imageFetches)
                 .then((results) => Promise.all(results.map(r => r.json())))
                 .then((results) => {
-                    setHouseImages([...houseImages, ...results]);
+                    const oldHouseImages = imagesToDelete ? 
+                    houseImages.filter((houseImage) => houseImage?.listing_id?.toString() !== listingToEdit?.id?.toString())
+                    : houseImages;
+                    setHouseImages([...oldHouseImages, ...results]);
                     setFormData({ ...initialFormData });
+                    if (isExistingListing) {
+                        if (typeof closeEditListing === 'function') closeEditListing();
+                    } else {
+                        navigate(`/listings/${house.id}`);
+                    }
+                    
                 })
                 .catch((error) => console.error("Error adding new listing images", error));
             } catch(e) {
@@ -100,7 +119,7 @@ function NewListing() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        addNewListing(formData);
+        addOrEditListing(formData);
     };
 
     return (
@@ -113,7 +132,7 @@ function NewListing() {
                 </section>
             </div>)) : (
             <div className="container">
-                <h2>Add a new listing:</h2>
+                <h2>{!!listingToEdit ? 'Edit listing:' : 'Add a new listing:'}</h2>
                 <form onSubmit={handleSubmit}>
                 <div className="row">
                     <div className="col-25">
@@ -369,7 +388,7 @@ function NewListing() {
                     </div>
                 </div>
                 <div>
-                    <button className="submit-button">Submit New Listing</button>
+                    <button className="submit-button">{!!listingToEdit ? 'Edit Listing' : 'Submit New Listing' }</button>
                 </div>
                 </form>
                 <Link to='/listings'><button className="submit-button">Back to All Listings</button></Link>
