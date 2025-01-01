@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { Link, useOutletContext, useParams, useNavigate } from "react-router-dom";
 import { useUser } from "./UserContext";
 import ConfirmationModal from "./ConfirmationModal";
-import NewListing from "./NewListing";
 
 function HouseDetails(){
-    const { houses, checkIfBooked, bookedOrNot, houseImages } = useOutletContext();
+    const { houses, setHouses, checkIfBooked, bookedOrNot, houseImages } = useOutletContext();
     const { user, signedIn } = useUser();
     const { id } = useParams();
     const [isOwner, setIsOwner] = useState(false)
@@ -17,7 +16,6 @@ function HouseDetails(){
     const [date, setDate] = useState();
     const [time, setTime] = useState();
     const [showModal, setShowModal] = useState(false)
-    const [showEdit, setShowEdit] = useState(false)
 
     fetch(`/check`)
     .then((resp) => resp.json())
@@ -80,13 +78,6 @@ function HouseDetails(){
         return houseImage?.listing_id?.toString() === id?.toString();
     });
 
-    function handleEdit() {
-        setShowEdit(true);
-        window.scrollTo({
-            top: 0
-        });
-    }
-
     function handleRemove() {
         setShowModal(true);
     }
@@ -97,7 +88,10 @@ function HouseDetails(){
         })
         .then(() => {})
         .then(() => {
+            const oldHouses = houses.filter((house) => house?.id?.toString() !== id?.toString());
+            setHouses([...oldHouses]);
             setShowModal(false);
+            window.scrollTo({top: 0}); 
             navigate('/listings');
         })
     }
@@ -106,111 +100,93 @@ function HouseDetails(){
         setShowModal(false);
     }
 
-    const cancelEdit = () => {
-        setShowEdit(false);
-        window.scrollTo({
-            top: 0
-        });
-    }
-
     return (
-        <div>
-            {showEdit ? (
-                <>
-                    <NewListing listingToEdit={house} closeEditListing={cancelEdit} />
-                    <button onClick={cancelEdit} className="submit-button">Remove Changes</button>
-                </>
-            ) : (
-                <div className="details">
-                    <section>
-                        <Link to={`/listings/${id}/images`}>
-                            <img className="detail-image" src={firstHouseImage?.file} alt={id} />
-                        </Link>
-                        <h4>{`$ ${price}`}</h4>
-                        <p>{address}</p>
-                        <p>Sq. Ft: {sqft}</p>
-                        <p>Bedrooms: {bedroom}</p>
-                        <p>Bathrooms: {bathroom}</p>
-                        <p>Kitchen: {kitchen}</p>
-                        <p>Amenity: {amenity}</p>
-                        <p>Pets allowed: {pets?.toString()}</p>
-                        {signedIn &&
-                            <button className="submit-button" onClick={() => {
-                                if (isBooked) {
-                                    bookedOrNot(id);
-                                } else {
-                                    setDateTimePickerIsOpen(true)        
-                                }
-                            }}>
-                                {isBooked ? 'Remove From Booking' : 'Add To Booking'}
-                            </button>
+        <div className="details">
+            <section>
+                <Link to={`/listings/${id}/images`}>
+                    <img className="detail-image" src={firstHouseImage?.file} alt={id} />
+                </Link>
+                <h4>{`$ ${price}`}</h4>
+                <p>{address}</p>
+                <p>Sq. Ft: {sqft}</p>
+                <p>Bedrooms: {bedroom}</p>
+                <p>Bathrooms: {bathroom}</p>
+                <p>Kitchen: {kitchen}</p>
+                <p>Amenity: {amenity}</p>
+                <p>Pets allowed: {pets?.toString()}</p>
+                {signedIn &&
+                    <button className="submit-button" onClick={() => {
+                        if (isBooked) {
+                            bookedOrNot(id);
+                        } else {
+                            setDateTimePickerIsOpen(true)        
                         }
-                        { dateTimePickerIsOpen && (
-                            <div className="date-time-picker">
-                                {dateTimePickerError && (
-                                    <div className="error">Please input a valid date and time, between 9am to 5pm.</div>
-                                )}
-                                <label htmlFor="booking-date">Booking time (date and time):</label>
-                                <input type="date" id="booking-date" name="booking-date" onChange={handleDateChange} />
-                                <input type="time" id="booking-time" name="booking-time" onChange={handleTimeChange} />
-                                <button className="submit-button" type="submit" disabled={dateTimePickerError} onClick={() => bookedOrNotWithValidTime()}>Submit</button>
-                                <button className="submit-button" onClick={() => setDateTimePickerIsOpen(false)}>Cancel</button>
-                            </div>
+                    }}>
+                        {isBooked ? 'Remove From Booking' : 'Add To Booking'}
+                    </button>
+                }
+                { dateTimePickerIsOpen && (
+                    <div className="date-time-picker">
+                        {dateTimePickerError && (
+                            <div className="error">Please input a valid date and time, between 9am to 5pm.</div>
                         )}
-                        <Link to='/listings'><button className="submit-button">Back to Listings</button></Link>
-                        <Link to='/bookings'><button className="submit-button">Back to Bookings</button></Link>
-                        {isOwner && signedIn && (
-                            <>
-                                <div>
-                                    <button onClick={handleRemove} className="submit-button">Remove Listing</button>
-                                    <button onClick={handleEdit} className="submit-button">Edit Listing</button>
-                                </div>
-                                {showModal && (
-                                    <ConfirmationModal
-                                        message={"Are you sure you want to remove this listing?"}
-                                        onConfirm={handleRemoveConfirm}
-                                        onCancel={handleRemoveCancel}
-                                    />
-                                )}
-                            </>
+                        <label htmlFor="booking-date">Booking time (date and time):</label>
+                        <input type="date" id="booking-date" name="booking-date" onChange={handleDateChange} />
+                        <input type="time" id="booking-time" name="booking-time" onChange={handleTimeChange} />
+                        <button className="submit-button" type="submit" disabled={dateTimePickerError} onClick={() => bookedOrNotWithValidTime()}>Submit</button>
+                        <button className="submit-button" onClick={() => setDateTimePickerIsOpen(false)}>Cancel</button>
+                    </div>
+                )}
+                <button className="submit-button" onClick={() => {window.scrollTo({top: 0}); navigate('/listings')}}>Back to Listings</button>
+                <button className="submit-button" onClick={() => {window.scrollTo({top: 0}); navigate('/bookings')}}>Back to Bookings</button>
+                {isOwner && signedIn && (
+                    <>
+                        <button onClick={handleRemove} className="submit-button">Remove Listing</button>
+                        <button onClick={() => {window.scrollTo({top: 0}); navigate(`/listings/${id}/edit`)}} className="submit-button">Edit Listing</button>
+                        {showModal && (
+                            <ConfirmationModal
+                                message={"Are you sure you want to remove this listing?"}
+                                onConfirm={handleRemoveConfirm}
+                                onCancel={handleRemoveCancel}
+                            />
                         )}
-                    </section>
-                    <section>
-                        <h2>About</h2>
-                        <p>{about}</p>
-                    </section>
-                    <section>
-                        <h2>Highlights</h2>
-                        <h4>Listing Features</h4>
-                            <ul>
-                                <li>Listing type: {type}</li>
-                                <li>Parking: {parking?.toString()}</li>
-                                <li>Heat and Water Included: {heat_water?.toString()}</li>
-                            </ul>
-                        <h4>Community Features</h4>
-                            <ul>
-                                <li>Amenity: {amenity}</li>
-                                <li>Security: {security}</li>
-                            </ul>
-                    </section>
-                    <section>
-                        <h2>Fees</h2>
-                        <ul>
-                            <li>One Month Advance: $ {price}</li>
-                            <li>One Month Security Depost: $ {price}</li>
-                            <li>Application Fee: $ 100.00</li>
-                            <li>Lease Options: 12 months and 24 months available</li>
-                        </ul>
-                    </section>
-                    <section>
-                        <h2>Transportation</h2>
-                        <ul>
-                            <li>Public Transportation: {train}</li>
-                            <li>Nearby Airports: {airport}</li>
-                        </ul>
-                    </section>
-                </div>
-            )}
+                    </>
+                )}
+            </section>
+            <section>
+                <h2>About</h2>
+                <p>{about}</p>
+            </section>
+            <section>
+                <h2>Highlights</h2>
+                <h4>Listing Features</h4>
+                    <ul>
+                        <li>Listing type: {type}</li>
+                        <li>Parking: {parking?.toString()}</li>
+                        <li>Heat and Water Included: {heat_water?.toString()}</li>
+                    </ul>
+                <h4>Community Features</h4>
+                    <ul>
+                        <li>Amenity: {amenity}</li>
+                        <li>Security: {security}</li>
+                    </ul>
+            </section>
+            <section>
+                <h2>Fees</h2>
+                <ul>
+                    <li>One Month Advance: $ {price}</li>
+                    <li>One Month Security Depost: $ {price}</li>
+                    <li>Application Fee: $ 100.00</li>
+                    <li>Lease Options: 12 months and 24 months available</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Transportation</h2>
+                <ul>
+                    <li>Public Transportation: {train}</li>
+                    <li>Nearby Airports: {airport}</li>
+                </ul>
+            </section>
         </div>
     );
 }

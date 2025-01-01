@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import HouseCard from "./HouseCard";
+import { useUser } from "./UserContext";
 
-function Listings() {
+function Listings({isMyListings = false}) {
     const { houses } = useOutletContext();
+    const { user } = useUser();
     const [sort, setSort] = useState('asc');
     const [searchTerm, setSearchTerm ] = useState('');
 
@@ -17,13 +19,14 @@ function Listings() {
 
     const filteredHouse = houses
         .filter((listing) => listing?.address?.toLowerCase()?.includes(searchTerm?.toLowerCase()))
+        .filter((listing) => isMyListings ? listing?.user_id?.toString() === user?.id?.toString() : true)
         .sort((a, b) => {
             if (sort === 'asc') {
                 return a.price - b.price;
             } else {
                 return b.price - a.price
             }
-        })
+        });
 
     return (
         <main>
@@ -34,35 +37,41 @@ function Listings() {
                 placeholder="search here"
                 value={searchTerm}
                 onChange={handleSearchChange}/>
+                <button className="submit-button" onClick={handleSortPrice}>
+                    Sort by Price: {sort === 'asc' ? 'High to Low' : 'Low to High'}
+                </button>
             </div>
-            <button className="submit-button" onClick={handleSortPrice}>
-                Sort by Price: {sort === 'asc' ? 'High to Low' : 'Low to High'}
-            </button>
             <ul className="cards">
-                {filteredHouse.map((house) => (
-                    <HouseCard 
-                        key={house.id}
-                        id={house.id}
-                        price={house.price}
-                        address={house.address}
-                        sqft={house.sqft}
-                        bedroom={house.bedroom}
-                        bathroom={house.bathroom}
-                        kitchen={house.kitchen}
-                        amenity={house.amenity}
-                        img={house.img}
-                        pets={house.pets}
-                        about={house.about}
-                        type={house.type}
-                        parking={house.parking}
-                        heat_water={house.heat_water}
-                        security={house.security}
-                        ownerUser={house.user_id}
-                />
-                ))}
+                {filteredHouse.length <= 0 ? (
+                    <div>
+                        No listings found
+                    </div>
+                ) : (
+                    filteredHouse.map((house) => (
+                        <HouseCard 
+                            key={house.id}
+                            id={house.id}
+                            price={house.price}
+                            address={house.address}
+                            sqft={house.sqft}
+                            bedroom={house.bedroom}
+                            bathroom={house.bathroom}
+                            kitchen={house.kitchen}
+                            amenity={house.amenity}
+                            img={house.img}
+                            pets={house.pets}
+                            about={house.about}
+                            type={house.type}
+                            parking={house.parking}
+                            heat_water={house.heat_water}
+                            security={house.security}
+                            ownerUser={house.user_id}
+                        />
+                    ))
+                )}
             </ul>
         </main>
-    )
+    );
 }
 
 export default Listings;

@@ -41,9 +41,10 @@ function NavBar () {
                 <NavLink className="headerlink" to='/listings'>Listings</NavLink>
                 <NavLink className="headerlink" to='/bookings'>Bookings</NavLink>
                 {!signedIn ? 
-                (<NavLink className="headerlink" to='/signin'>Sign In</NavLink>) :
-                (<NavLink className='headerlink' onClick={logout}>Logout</NavLink>)}
-                
+                    (<NavLink className="headerlink" to='/signin'>Sign In</NavLink>) :
+                    (<NavLink className='headerlink' onClick={logout}>Logout</NavLink>)
+                }
+                {signedIn && <NavLink className="headerlink" to='/my-listings'>My Listings</NavLink>}
                 <NavLink className="headerlink" to='/create-listing'>Create Listing</NavLink>
             </span>
         </header>
