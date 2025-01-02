@@ -1,128 +1,116 @@
 # RENTER
 
-# Phase 4 Full-Stack Application Project
-
 ## Description
 
 "Renter" is a comprehensive web application designed to streamline the rental process for both renters and property owners. Users can easily search for available rental properties, book them directly, and manage their bookings all in one place. For property owners, Renter offers the ability to create, edit, and delete their listings, giving them full control over their rental offerings. Whether you're looking for a place to stay or managing your own rental properties, Renter provides an intuitive platform to simplify the experience.
 
----
+## Features
 
-## Generating your environment
-
-
-```console
-$ tree -L 2
-$ # the -L argument limits the depth at which we look into the directory structure
-.
-├── CONTRIBUTING.md
-├── LICENSE.md
-├── Pipfile
-├── README.md
-├── client
-│   ├── README.md
-│   ├── package.json
-│   ├── public
-│   └── src
-└── server
-    ├── app.py
-    ├── config.py
-    ├── models.py
-    └── seed.py
-```
-
----
+- Create and sign into your account
+- Create and view listings
+- Full CRUD functionality with listings
+- Filter listings by cost and view personal listings
+- Create a booking with a listing on a time of choice
 
 ## Setup
 
-### `server/`
-
-The `server/` directory contains all of your backend code.
-
-`app.py` is your Flask application. You'll want to use Flask to build a simple
-API backend like we have in previous modules. You should use Flask-RESTful for
-your routes. You should be familiar with `models.py` and `seed.py` by now, but
-remember that you will need to use Flask-SQLAlchemy, Flask-Migrate, and
-SQLAlchemy-Serializer instead of SQLAlchemy and Alembic in your models.
-
-The project contains a default `Pipfile` with some basic dependencies. You may
-adapt the `Pipfile` if there are additional dependencies you want to add for
-your project.
-
-To download the dependencies for the backend server, run:
-
+1. Clone the Github Repo
+2. Navigate to the server directory
+3. Ensure you have the proper dependencies installed:
+```console
+pip install flask flask-sqlalchemy flask-migrate flask-cors
+```
+4. Create a pipenv shell to work in:
 ```console
 pipenv install
 pipenv shell
 ```
-
-You can run your Flask API on [`localhost:5555`](http://localhost:5555) by
-running:
-
+5. Create and upgrade the SQL database:
 ```console
-python server/app.py
+export FLASK_RUN=app.py
+flask db init
+flask db migrate
+flask db upgrade
 ```
-
-Check that your server serves the default route `http://localhost:5555`. You
-should see a web page with the heading "Project Server".
-
-### `client/`
-
-The `client/` directory contains all of your frontend code. The file
-`package.json` has been configured with common React application dependencies,
-include `react-router-dom`. The file also sets the `proxy` field to forward
-requests to `"http://localhost:5555". Feel free to change this to another port-
-just remember to configure your Flask app to use another port as well!
-
-To download the dependencies for the frontend client, run:
-
+6. Finally, run the flask server:
 ```console
-npm install --prefix client
+flask run
 ```
-
-You can run your React app on [`localhost:3000`](http://localhost:3000) by
-running:
-
-```sh
-npm start --prefix client
+7. Now for the frontend, navigate out of the server directory and into the client directory
+8. Install dependencies:
+```console
+npm install
 ```
+9. Run the frontend server:
+```console
+npm start
+```
+10. Your program should now be up and running!
 
-Check that your the React client displays a default page
-`http://localhost:3000`. You should see a web page with the heading "Project
-Client".
+## Routes
 
-## Generating Your Database
+### Listings
 
-INFO HERE
+- GET ```/listings```: returns a list of all listings in the database
+- POST ```/listings```: creates a new listing within the database
+- GET ```/listings/<id>```: returns a listing at the specified id
+- PUT ```/listings/<id>```: updates a listing with new information at a specified id
+- DELETE ```/listings/<id>```: permanently removes a listing from the database at a specified id
 
----
+### Bookings
 
-## Routes/Models?
+- GET ```/bookings```: returns a list of bookings in the database
+- POST ```/bookings```: creates a new booking within the database
+- GET ```/bookings/<id>```: returns a booking at the specified id
+- PATCH ```/bookings/<id>```: updates a booking with given information at a specified id
+-DELETE ```/bookings/<id>```: permanently removes a booking from the database at a specified id
+-GET ```/users-bookings/<id>```: returns a the user owner of a booking at a specified id
 
-INFO HERE
+### Signup
 
----
+- POST ```/signup```: creates a new user within the database and signs them in
+- GET ```/check```: returns the current user that the session belongs to
+- POST ```/login```: creates a new login request using existing users in the database and signs them in
+- DELETE ```/logout```: removes the current user's session (signs them out)
 
-## Key Features
+### Images
 
-### See all available listings
+- GET ```/listings-images```: returns a list of all images in the database
+- GET ```/listings-images/<id>```: returns an image at the specified id
+- POST ```/listings-images/<id>```: creates a new image to add to the collection at the specified id
+- DELETE ```/listings-images/<id>```: permanently removes an image or collection of images from a specified id
 
-Browse all our listings in one convenient place! Whether you're looking for an apartment, house, or vacation rental, we offer a wide variety of options to fit your needs. With everything in one spot, finding your next rental has never been easier. Explore our listings today and discover the perfect place for you!
+## Usage
 
-### Search for listings
+### Sign-in
 
-Browse through detailed listings, view high-quality photos, and explore real-time availability— all in one place. Finding your perfect rental has never been easier. Our platform offers a seamless, user-friendly experience with powerful search filters to help you narrow down options based on your needs and preferences. Start your search today and discover your next home with ease!
+1. Navigate to the 'Sign In' page
+2. If you are creating a new account, select the register new account button
+3. Enter your credentials to sign in, if successful you will recieve an alert confirming your sign in and be redirected to the home page
+4. While signed in, you can fully access the features of this website, but you can always log out at any point by selecting the logout button in the navbar
 
-### Manage your bookings
+### Creating and Viewing Listings
 
-Once you are signed in, easily manage your apartment tour bookings with our web application.. Schedule, reschedule, or cancel tours at your own convenience, all in one place. Keep track of upcoming appointments, set reminders, and ensure you never miss a showing. Whether you're a renter or a property manager, our web app makes apartment tour booking management seamless and efficient.
+1. To add a listing, sign in and navigate to the 'Create Listing' page
+2. Enter in all of the information about the listing and click submit to confirm it being added
+3. To view listings, navigate to the 'Listings' page
+4. From here, you may sort by price, and click on a listing to view more information
 
-### Manage your rentals
+### Altering Your Listings
 
-Our platform lets you stay on top of everything—from listing your properties and handling bookings. With streamlined tools for scheduling, editing and deleting your own rentals, you can effortlessly keep your rental business organized and efficient. Take control of your properties and enjoy a hassle-free management experience today!
+1. While signed in, navigate to the 'My Listings' page
+2. From here, you can view all of your current listings, click on the one that you wish to alter to pull up its full detailed information
+3. If you wish to delete a listing, simply click the delete button and confirm it's removal WARNING: THIS ACTION CANNOT BE UNDONE
+4. If you wish to edit a listing, click the edit button to pull up it's information, and change it as you want. Images will have to be reattached, but otherwise you can make changes using it's current information
 
----
+### Bookings
 
-## Conclusion
+1. While signed in, navigate to the 'Listings' page
+2. Click on a listing you're interested in and select 'Add to Booking'
+3. Enter the time and date in which you wish to make the booking, and select Submit
+4. You now can navigate to the 'Bookings' page to view all of your current bookings
+5. Clicking on them will once again allow you to view the details of the listing
+6. If you wish to cancel a booking, simply hit the remove booking button to cancel it
 
-"Renter" offers a user-friendly and efficient solution for both renters and property owners, simplifying the entire rental process. With its powerful features—searching for rentals, booking with ease, managing reservations, and providing full control over property listings—Renter enhances the experience for everyone involved. Whether you're seeking a place to stay or looking to list and manage your own property, Renter provides the tools you need to make the process seamless and hassle-free.
+
+

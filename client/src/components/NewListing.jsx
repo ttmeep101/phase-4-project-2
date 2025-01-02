@@ -138,6 +138,7 @@ function NewListing({isEdit = false}) {
                     </div>
                     <div className="col-75">
                         <input
+                            required
                             className="new-listing-input"
                             type='number'
                             name='price'
@@ -154,6 +155,7 @@ function NewListing({isEdit = false}) {
                     </div>
                     <div className="col-75">
                         <input
+                            required
                             className="new-listing-input"
                             type='text'
                             name='address'
@@ -170,6 +172,7 @@ function NewListing({isEdit = false}) {
                     </div>
                     <div className="col-75">
                         <input
+                            required
                             className="new-listing-input"
                             type="text"
                             name="type"
@@ -186,6 +189,7 @@ function NewListing({isEdit = false}) {
                     </div>
                     <div className="col-75">
                         <input
+                            required
                             className="new-listing-input"
                             type='number'
                             name='sqft'
@@ -202,6 +206,7 @@ function NewListing({isEdit = false}) {
                     </div>
                     <div className="col-75">
                         <input
+                            required
                             className="new-listing-input"
                             type='number'
                             name='bedroom'
@@ -218,6 +223,7 @@ function NewListing({isEdit = false}) {
                     </div>
                     <div className="col-75">
                         <input
+                            required
                             className="new-listing-input"
                             type='number'
                             name='bathroom'
@@ -234,6 +240,7 @@ function NewListing({isEdit = false}) {
                     </div>
                     <div className="col-75">
                         <input
+                            required
                             className="new-listing-input"
                             type='number'
                             name='kitchen'
@@ -250,6 +257,7 @@ function NewListing({isEdit = false}) {
                     </div>
                     <div className="col-75">
                         <input
+                            required
                             className="new-listing-input"
                             type='text'
                             name='amenity'
@@ -266,6 +274,7 @@ function NewListing({isEdit = false}) {
                     </div>
                     <div className="col-75">
                         <input
+                            required
                             className="new-listing-input"
                             type="text"
                             name="about"
@@ -282,6 +291,7 @@ function NewListing({isEdit = false}) {
                     </div>
                     <div className="col-75">
                         <input
+                            required
                             className="new-listing-input"
                             type="text"
                             name="train"
@@ -298,6 +308,7 @@ function NewListing({isEdit = false}) {
                     </div>
                     <div className="col-75">
                         <input
+                            required
                             className="new-listing-input"
                             type="text"
                             name="airport"
@@ -314,6 +325,7 @@ function NewListing({isEdit = false}) {
                     </div>
                     <div className="col-75">
                         <input
+                            required
                             className="new-listing-input"
                             type="text"
                             name="security"

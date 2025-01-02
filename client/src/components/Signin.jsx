@@ -94,6 +94,7 @@ function Signin() {
                 </div>
                 <div className="col-75">
                     <input 
+                        required
                         id='username'
                         name='username'
                         type='text'
@@ -109,6 +110,7 @@ function Signin() {
                 </div>
                 <div className="col-75">
                     <input 
+                        required
                         id='password'
                         name='password'
                         type='password'
@@ -126,6 +128,7 @@ function Signin() {
                             </div>
                             <div className="col-75">
                                 <input 
+                                    required
                                     id='name'
                                     name='name'
                                     type="text"
@@ -141,10 +144,12 @@ function Signin() {
                             </div>
                             <div className="col-75">
                                 <input 
+                                required
                                 id='age'
                                 name='age'
                                 type="number"
                                 placeholder="Your Age"
+                                min="18"
                                 value={age}
                                 onChange={(e) => setAge(e.target.value)}
                                 />
