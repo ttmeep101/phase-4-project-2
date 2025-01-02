@@ -63,7 +63,7 @@ body {
 }
 
 .headerlink:hover {
-  color: #129f37;
+  color: #f186cc;
 }
 
 .footer {
@@ -100,7 +100,7 @@ body {
 }
 
 .card:hover {
-  box-shadow: 0 8px 16px green;
+  box-shadow: 0 8px 16px rgb(232, 153, 218);
   transform: translateY(-5px);
 }
 
@@ -134,6 +134,11 @@ h2 {
   text-align: center;
   text-shadow: 1px 2px rgb(0, 6, 10);
 }
+
+/* .title-h2, .footer-h2 {
+  font-size: 40px;
+  color: #ea66cd;
+} */
 
 .searchbar {
   padding: 1rem;
@@ -199,11 +204,11 @@ section {
 }
 
 .section-title {
-  background: url("apartments.jpg");
+  background: url("brownstoneai.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  min-height: 30vh;
+  min-height: 40vh;
 }
 
 .main-details-section {

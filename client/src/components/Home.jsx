@@ -9,7 +9,7 @@ function Home() {
     <div className="home">
       <section className="section-title">
         <h1 className="title">Welcome to Renter</h1>
-        <h2>Renting made easy</h2>
+        <h2 className="title-h2">Renting made easy</h2>
       </section>
       <section>
         <h2 className="section-header">Renting Made Simple</h2>
