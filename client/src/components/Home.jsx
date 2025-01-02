@@ -13,7 +13,7 @@ function Home() {
       </section>
       <section>
         <h2 className="section-header">Renting Made Simple</h2>
-        <p>browse all our listings in one convenient place! 
+        <p>Browse all our listings in one convenient place! 
           Whether you're looking for an apartment, house, or vacation rental, we offer a wide variety of options to fit your needs. 
           With everything in one spot, finding your next rental has never been easier. Explore our listings today and discover the perfect place for you!</p>
         <Link to='/listings'><button className="submit-button">See all listings</button></Link>
@@ -36,9 +36,9 @@ function Home() {
       </section>
       <section>
         <h2 className="section-header">Manage your Rentals</h2>
-        <p>Our platform lets you stay on top of everything—from listing your properties and handling bookings. 
-        With streamlined tools for scheduling and viewing reports, you can effortlessly keep your rental business organized and efficient. 
-        Take control of your properties and enjoy a hassle-free management experience today!
+        <p>Our platform lets you stay on top of everything—from listing your properties and handling bookings.
+          With streamlined tools for scheduling, editing and deleting your own rentals, you can effortlessly keep your rental business organized and efficient.
+          Take control of your properties and enjoy a hassle-free management experience today!
         </p>
         {!signedIn ? (
           <Link to='/signin'><button className="submit-button">Sign In</button></Link>
